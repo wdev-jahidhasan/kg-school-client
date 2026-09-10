@@ -4,11 +4,11 @@ import { GraduationCap, MapPin, Phone, Mail } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="border-t border-amber-200/60 bg-amber-50/85 backdrop-blur-md text-slate-600 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+        <div className="mx-auto flex flex-col md:flex-row flex-wrap justify-between items-start gap-8 text-left">
 
           {/* Column 1: About School */}
-          <div className="space-y-4">
+          <div className="space-y-4 max-w-xs">
             <div className="flex items-center gap-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-700 text-white shadow-md">
                 <GraduationCap className="h-6 w-6" />
@@ -18,7 +18,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm">
-              Dedicated to making early childhood education joyful and tech-enabled. A unique blend of quality learning and secure payment solutions.
+              Dedicated to nurturing young minds through joyful early childhood education, creative exploration, and a strong foundation for lifelong academic success.
             </p>
             <div className="flex space-x-4">
               {/* Facebook Icon SVG */}
@@ -49,9 +49,6 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/about" className="hover:text-emerald-700 dark:hover:text-emerald-400">About Us</Link>
-              </li>
-              <li>
                 <Link href="/academics" className="hover:text-emerald-700 dark:hover:text-emerald-400">Academics</Link>
               </li>
               <li>
@@ -64,7 +61,7 @@ export default function Footer() {
           </div>
 
           {/* Column 3: Portal Logins */}
-          <div>
+          {/* <div>
             <h3 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider mb-4">
               Portal Access
             </h3>
@@ -79,7 +76,7 @@ export default function Footer() {
                 <Link href="/login?role=guardian" className="hover:text-emerald-700 dark:hover:text-emerald-400">Guardian Portal (Stripe)</Link>
               </li>
             </ul>
-          </div>
+          </div> */}
 
           {/* Column 4: Contact Info */}
           <div>
@@ -104,13 +101,13 @@ export default function Footer() {
 
         </div>
 
-        {/* Bottom Copyright */}
-        <div className="mt-12 border-t border-amber-200/60 pt-8 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs">
+        {/* Bottom Copyright - Compact Spacing */}
+        <div className="mt-6 border-t border-amber-200/60 pt-4 dark:border-slate-800 flex flex-col items-center justify-center text-xs text-center">
           <p>&copy; {new Date().getFullYear()} Junior Scholars KG School. All rights reserved.</p>
-          <div className="flex space-x-6 mt-4 sm:mt-0">
+          {/* <div className="flex space-x-6 mt-3">
             <Link href="/privacy" className="hover:text-emerald-700 dark:hover:text-emerald-400">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-emerald-700 dark:hover:text-emerald-400">Terms of Service</Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>
