@@ -14,7 +14,7 @@ export default function Footer() {
                 <GraduationCap className="h-6 w-6" />
               </div>
               <span className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
-                Bright Sparks <span className="text-emerald-600 dark:text-emerald-400">KG</span>
+                Junior <span className="text-emerald-600 dark:text-emerald-400">Scholars</span>
               </span>
             </div>
             <p className="text-sm">
@@ -97,7 +97,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-emerald-700 dark:text-emerald-500 shrink-0" />
-                <span>info@brightsparkskg.edu</span>
+                <span>info@juniorscholarskg.edu</span>
               </li>
             </ul>
           </div>
@@ -106,7 +106,7 @@ export default function Footer() {
 
         {/* Bottom Copyright */}
         <div className="mt-12 border-t border-amber-200/60 pt-8 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs">
-          <p>&copy; {new Date().getFullYear()} Bright Sparks KG School. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Junior Scholars KG School. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 sm:mt-0">
             <Link href="/privacy" className="hover:text-emerald-700 dark:hover:text-emerald-400">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-emerald-700 dark:hover:text-emerald-400">Terms of Service</Link>

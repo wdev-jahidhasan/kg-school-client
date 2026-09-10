@@ -11,7 +11,6 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
-  // Hydration complete hole mounted true hobe
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -27,13 +26,10 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-amber-200/60 bg-amber-50/30 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
 
-        {/* --- MOBILE LAYOUT: Hamburger -> Theme -> Logo & Name --- */}
-        {/* --- DESKTOP LAYOUT: Logo (Left) -> Nav (Middle) -> Actions (Right) --- */}
-
         {/* Left Section on Mobile / Logo on Desktop */}
         <div className="flex items-center gap-2 sm:gap-4">
-          
-          {/* Mobile Menu Toggle (সবার বামে) */}
+
+          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100/60 text-slate-700 dark:bg-slate-800 dark:text-slate-200"
@@ -42,7 +38,7 @@ export default function Navbar() {
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
 
-          {/* Theme Toggle Button (Mobile এ হ্যামবার্গারের পরে) */}
+          {/* Theme Toggle Button */}
           <motion.button
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
@@ -59,7 +55,7 @@ export default function Navbar() {
               <GraduationCap className="h-6 w-6" />
             </div>
             <span className="text-base sm:text-xl font-bold tracking-tight text-slate-800 dark:text-white truncate">
-              Bright Sparks <span className="text-emerald-600 dark:text-emerald-400">KG</span>
+              Junior <span className="text-emerald-600 dark:text-emerald-400">Scholars</span>
             </span>
           </Link>
         </div>
@@ -77,7 +73,7 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Right Side Actions (Mobile এ Login, Desktop এ Theme + Login) */}
+        {/* Right Side Actions */}
         <div className="flex items-center gap-2 sm:gap-4">
 
           {/* Theme Toggle Button (Desktop Only) */}
@@ -91,7 +87,7 @@ export default function Navbar() {
             {mounted && (theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />)}
           </motion.button>
 
-          {/* Login Button (Mobile এবং Desktop উভয় স্ক্রিনের ডানে) */}
+          {/* Login Button */}
           <Link
             href="/login"
             className="inline-flex items-center justify-center rounded-lg bg-emerald-700 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-800"
