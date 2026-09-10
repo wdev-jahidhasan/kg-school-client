@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,15 +8,19 @@ import { Sun, Moon, Menu, X, GraduationCap } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  // Hydration complete hole mounted true hobe
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navLinks = [
     { name: "Home", href: "/" },
-    // { name: "About Us", href: "/about" },
     { name: "Academics", href: "/academics" },
     { name: "Admission", href: "/admission" },
     { name: "Notices", href: "/notices" },
-    // { name: "Contact", href: "/contact" },
   ];
 
   return (
@@ -57,7 +61,7 @@ export default function Navbar() {
             className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-100/60 text-slate-700 dark:bg-slate-800 dark:text-slate-200"
             aria-label="Toggle Theme"
           >
-            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {mounted && (theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />)}
           </motion.button>
 
           {/* Login Button */}
