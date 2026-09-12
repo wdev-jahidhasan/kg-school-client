@@ -4,6 +4,7 @@ import Banner from "./components/Banner";
 import WhyChooseUs from "./components/WhyChooseUs";
 import AcademicPrograms from "./components/AcademicPrograms";
 import PhotoGallery from "./components/PhotoGallery";
+import FAQSection from "./components/FaqSection";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <WhyChooseUs></WhyChooseUs>
       <AcademicPrograms></AcademicPrograms>
       <PhotoGallery></PhotoGallery>
+      <FAQSection></FAQSection>
     </div>
   );
 }
