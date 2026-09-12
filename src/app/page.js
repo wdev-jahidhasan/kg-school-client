@@ -3,6 +3,7 @@ import Hero from "./components/Hero";
 import Banner from "./components/Banner";
 import WhyChooseUs from "./components/WhyChooseUs";
 import AcademicPrograms from "./components/AcademicPrograms";
+import PhotoGallery from "./components/PhotoGallery";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       {/* <Hero></Hero> */}
       <WhyChooseUs></WhyChooseUs>
       <AcademicPrograms></AcademicPrograms>
+      <PhotoGallery></PhotoGallery>
     </div>
   );
 }
