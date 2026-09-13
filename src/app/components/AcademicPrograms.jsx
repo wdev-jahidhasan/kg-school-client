@@ -46,7 +46,7 @@ const programs = [
 export default function AcademicPrograms() {
   return (
     <section className="py-20 lg:py-28 bg-white dark:bg-slate-950 w-full relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-12 lg:px-16">
 
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -69,7 +69,7 @@ export default function AcademicPrograms() {
         </div>
 
         {/* Programs Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 items-stretch">
           {programs.map((item, index) => (
             <motion.div
               key={item.id}
@@ -78,36 +78,36 @@ export default function AcademicPrograms() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ y: -8 }}
-              className={`p-8 rounded-3xl border ${item.bg} ${item.border} shadow-sm transition-all duration-300 flex flex-col h-full`}
+              className={`p-4 sm:p-8 rounded-2xl sm:rounded-3xl border ${item.bg} ${item.border} shadow-sm transition-all duration-300 flex flex-col h-full`}
             >
               {/* Icon & Age Badge */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm inline-flex items-center justify-center">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 sm:mb-6">
+                <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm inline-flex items-center justify-center w-fit">
                   {item.icon}
                 </div>
-                <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200/50 dark:border-slate-800">
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2 sm:px-3 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-slate-700 dark:text-slate-300 border border-slate-200/50 dark:border-slate-800 w-fit">
                   {item.age}
                 </span>
               </div>
 
               {/* Title */}
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+              <h3 className="text-base sm:text-xl font-bold text-slate-900 dark:text-white mb-2 sm:mb-3">
                 {item.title}
               </h3>
 
               {/* Description */}
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6">
+              <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6">
                 {item.description}
               </p>
 
               {/* Link / Button */}
-              <div className="mt-auto pt-4 border-t border-slate-200/40 dark:border-slate-800/60">
+              <div className="mt-auto pt-3 sm:pt-4 border-t border-slate-200/40 dark:border-slate-800/60">
                 <Link
                   href="/academics"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:gap-3 transition-all duration-300"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:gap-3 transition-all duration-300"
                 >
                   <span>Learn More</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </Link>
               </div>
             </motion.div>

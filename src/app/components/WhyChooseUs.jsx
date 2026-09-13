@@ -41,7 +41,7 @@ const features = [
 export default function WhyChooseUs() {
   return (
     <section className="py-20 lg:py-28 bg-white dark:bg-slate-950 w-full relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-12 lg:px-16">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -61,7 +61,7 @@ export default function WhyChooseUs() {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 items-stretch">
           {features.map((item, index) => (
             <motion.div
               key={item.id}
@@ -70,17 +70,17 @@ export default function WhyChooseUs() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ y: -8 }}
-              className={`p-8 rounded-3xl border ${item.bg} ${item.border} shadow-sm transition-all duration-300 flex flex-col h-full`}
+              className={`p-4 sm:p-8 rounded-2xl sm:rounded-3xl border ${item.bg} ${item.border} shadow-sm transition-all duration-300 flex flex-col h-full`}
             >
-              <div className="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm mb-6 inline-flex items-center justify-center w-fit">
+              <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm mb-4 sm:mb-6 inline-flex items-center justify-center w-fit">
                 {item.icon}
               </div>
 
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+              <h3 className="text-base sm:text-xl font-bold text-slate-900 dark:text-white mb-2 sm:mb-3">
                 {item.title}
               </h3>
 
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mt-auto">
+              <p className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed mt-auto">
                 {item.description}
               </p>
             </motion.div>
