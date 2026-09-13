@@ -5,12 +5,12 @@ import WhyChooseUs from "./components/WhyChooseUs";
 import AcademicPrograms from "./components/AcademicPrograms";
 import PhotoGallery from "./components/PhotoGallery";
 import FAQSection from "./components/FaqSection";
-import NoticeCarousel from "./components/NoticeCaurosel";
+import Marquee from "./components/Marquee";
 
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <NoticeCarousel></NoticeCarousel>
+      <Marquee></Marquee>
       <Banner></Banner>
       {/* <Hero></Hero> */}
       <PhotoGallery></PhotoGallery>
