@@ -12,9 +12,9 @@ export default function Home() {
 
       <Banner></Banner>
       {/* <Hero></Hero> */}
-      <WhyChooseUs></WhyChooseUs>
-      <AcademicPrograms></AcademicPrograms>
       <PhotoGallery></PhotoGallery>
+      <AcademicPrograms></AcademicPrograms>
+      <WhyChooseUs></WhyChooseUs>
       <FAQSection></FAQSection>
     </div>
   );
