@@ -40,22 +40,22 @@ const features = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="py-20 lg:py-28 bg-white dark:bg-slate-950 w-full relative overflow-hidden">
+    <section className="py-12 sm:py-16 lg:py-24 bg-white dark:bg-slate-950 w-full relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-12 lg:px-16">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-block px-4 py-1.5 rounded-full bg-amber-100 dark:bg-slate-900 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-slate-800 text-xs sm:text-sm font-semibold mb-4 shadow-sm">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-amber-100 dark:bg-slate-900 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-slate-800 text-xs sm:text-sm font-semibold mb-3 shadow-sm">
               Why Choose Us
             </span>
             <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
               Why Parents <span className="text-emerald-600 dark:text-emerald-400">Choose Us</span>
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400 font-medium">
+            <p className="mt-3 text-sm sm:text-lg text-slate-600 dark:text-slate-400 font-medium">
               We go beyond traditional teaching to build a strong foundation of confidence, curiosity, and happiness.
             </p>
           </motion.div>
@@ -72,7 +72,7 @@ export default function WhyChooseUs() {
               whileHover={{ y: -8 }}
               className={`p-4 sm:p-8 rounded-2xl sm:rounded-3xl border ${item.bg} ${item.border} shadow-sm transition-all duration-300 flex flex-col h-full`}
             >
-              <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm mb-4 sm:mb-6 inline-flex items-center justify-center w-fit">
+              <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm mb-3 sm:mb-6 inline-flex items-center justify-center w-fit">
                 {item.icon}
               </div>
 

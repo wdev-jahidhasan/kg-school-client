@@ -40,31 +40,31 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="py-20 lg:py-28 bg-white dark:bg-slate-950 w-full relative overflow-hidden">
+    <section className="py-12 sm:py-16 lg:py-24 bg-white dark:bg-slate-950 w-full relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-6 sm:px-12">
 
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-block px-4 py-1.5 rounded-full bg-amber-100 dark:bg-slate-900 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-slate-800 text-xs sm:text-sm font-semibold mb-4 shadow-sm">
+            <span className="inline-block px-4 py-1.5 rounded-full bg-amber-100 dark:bg-slate-900 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-slate-800 text-xs sm:text-sm font-semibold mb-3 shadow-sm">
               Got Questions?
             </span>
             <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
               Frequently Asked <span className="text-emerald-600 dark:text-emerald-400">Questions</span>
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400 font-medium">
+            <p className="mt-3 text-sm sm:text-lg text-slate-600 dark:text-slate-400 font-medium">
               Find quick answers to common queries regarding admissions, school hours, safety, and more.
             </p>
           </motion.div>
         </div>
 
         {/* FAQ Accordion List */}
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {faqs.map((faq, index) => {
             const isOpen = openId === faq.id;
 
@@ -79,9 +79,9 @@ export default function FAQSection() {
               >
                 <button
                   onClick={() => toggleFAQ(faq.id)}
-                  className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+                  className="w-full flex items-center justify-between p-4 sm:p-6 text-left focus:outline-none"
                 >
-                  <span className="text-base sm:text-lg font-bold text-slate-900 dark:text-white pr-4">
+                  <span className="text-sm sm:text-lg font-bold text-slate-900 dark:text-white pr-4">
                     {faq.question}
                   </span>
                   <div className={`p-2 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900" : ""}`}>
@@ -97,7 +97,7 @@ export default function FAQSection() {
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
-                      <div className="px-6 pb-6 text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed border-t border-slate-200/40 dark:border-slate-800/60 pt-4">
+                      <div className="px-4 sm:px-6 pb-4 sm:pb-6 text-slate-600 dark:text-slate-400 text-xs sm:text-base leading-relaxed border-t border-slate-200/40 dark:border-slate-800/60 pt-3 sm:pt-4">
                         {faq.answer}
                       </div>
                     </motion.div>
