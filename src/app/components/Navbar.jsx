@@ -18,9 +18,10 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "Academics", href: "/academics" },
+    // { name: "Home", href: "/" },
     { name: "Admission", href: "/admission" },
+    { name: "Academics", href: "/academics" },
+    { name: "Results", href: "/results" },
     { name: "Notices", href: "/notices" },
   ];
 
