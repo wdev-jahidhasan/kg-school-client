@@ -15,14 +15,14 @@ export default function Home() {
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <Marquee></Marquee>
       <Banner></Banner>
+      <PrincipalMessage></PrincipalMessage>
       {/* <Hero></Hero> */}
-      <PhotoGallery></PhotoGallery>
-      <AcademicPrograms></AcademicPrograms>
       <WhyChooseUs></WhyChooseUs>
+      <AcademicPrograms></AcademicPrograms>
+      <PhotoGallery></PhotoGallery>
       <Testimonials></Testimonials>
       <FAQSection></FAQSection>
-      <PrincipalMessage></PrincipalMessage>
-      <ContactSection></ContactSection>
+      {/* <ContactSection></ContactSection> */}
     </div>
   );
 }
