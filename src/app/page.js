@@ -6,6 +6,7 @@ import AcademicPrograms from "./components/AcademicPrograms";
 import PhotoGallery from "./components/PhotoGallery";
 import FAQSection from "./components/FaqSection";
 import Marquee from "./components/Marquee";
+import PrincipalMessage from "./components/PrincipalMessage";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <AcademicPrograms></AcademicPrograms>
       <WhyChooseUs></WhyChooseUs>
       <FAQSection></FAQSection>
+      <PrincipalMessage></PrincipalMessage>
     </div>
   );
 }
