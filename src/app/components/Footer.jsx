@@ -60,25 +60,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Portal Logins */}
-          {/* <div>
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider mb-4">
-              Portal Access
-            </h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/login?role=admin" className="hover:text-emerald-700 dark:hover:text-emerald-400">Admin Panel</Link>
-              </li>
-              <li>
-                <Link href="/login?role=teacher" className="hover:text-emerald-700 dark:hover:text-emerald-400">Teacher Portal</Link>
-              </li>
-              <li>
-                <Link href="/login?role=guardian" className="hover:text-emerald-700 dark:hover:text-emerald-400">Guardian Portal (Stripe)</Link>
-              </li>
-            </ul>
-          </div> */}
-
-          {/* Column 4: Contact Info */}
+          {/* Column 3: Contact Info */}
           <div>
             <h3 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider mb-4">
               Contact Us
@@ -86,28 +68,27 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-emerald-700 dark:text-emerald-500 shrink-0 mt-0.5" />
-                <span>Dhanmondi, Dhaka, Bangladesh</span>
+                <span>Jheelpara, Gobindaganj, Gaibandha</span>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-emerald-700 dark:text-emerald-500 shrink-0" />
-                <span>+880 1700-000000</span>
+              <li className="flex items-start gap-3">
+                <Phone className="h-5 w-5 text-emerald-700 dark:text-emerald-500 shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <div><span className="font-medium text-slate-800 dark:text-slate-200">Office:</span> +880 1700-000000</div>
+                  <div><span className="font-medium text-slate-800 dark:text-slate-200">Principal:</span> +880 1800-000000</div>
+                </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="h-5 w-5 text-emerald-700 dark:text-emerald-500 shrink-0" />
-                <span>info@juniorscholarskg.edu</span>
+                <span>info@juniorscholars.edu.bd</span>
               </li>
             </ul>
           </div>
 
         </div>
 
-        {/* Bottom Copyright - Compact Spacing */}
+        {/* Bottom Copyright */}
         <div className="mt-6 border-t border-amber-200/60 pt-4 dark:border-slate-800 flex flex-col items-center justify-center text-xs text-center">
           <p>&copy; {new Date().getFullYear()} Junior Scholars KG School. All rights reserved.</p>
-          {/* <div className="flex space-x-6 mt-3">
-            <Link href="/privacy" className="hover:text-emerald-700 dark:hover:text-emerald-400">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-emerald-700 dark:hover:text-emerald-400">Terms of Service</Link>
-          </div> */}
         </div>
       </div>
     </footer>
