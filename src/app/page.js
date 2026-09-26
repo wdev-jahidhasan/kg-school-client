@@ -7,6 +7,7 @@ import PhotoGallery from "./components/PhotoGallery";
 import FAQSection from "./components/FaqSection";
 import Marquee from "./components/Marquee";
 import PrincipalMessage from "./components/PrincipalMessage";
+import Testimonials from "./components/Testimonials";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <PhotoGallery></PhotoGallery>
       <AcademicPrograms></AcademicPrograms>
       <WhyChooseUs></WhyChooseUs>
+      <Testimonials></Testimonials>
       <FAQSection></FAQSection>
       <PrincipalMessage></PrincipalMessage>
     </div>
