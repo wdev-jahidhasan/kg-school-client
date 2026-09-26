@@ -7,22 +7,29 @@ const testimonials = [
   {
     id: 1,
     name: "Nazmul Hossain",
-    role: "Parent of Play Group Student",
+    role: "Guardian of Play Group Student",
     comment: "The environment at Junior Scholars Kindergarten School is wonderful. My daughter goes there happily every day to learn, and we are truly pleased with her progress.",
     rating: 5,
   },
   {
     id: 2,
     name: "Farhana Akter",
-    role: "Parent of Nursery Student",
+    role: "Guardian of Nursery Student",
     comment: "The teachers are extremely caring and attentive. Special attention is given to every single child. This school is undoubtedly the best choice for shaping our child's future.",
     rating: 5,
   },
   {
     id: 3,
     name: "Rakibul Hasan",
-    role: "Parent of KG-1 Student",
+    role: "Guardian of KG-1 Student",
     comment: "The play-based learning method is very effective. My son used to resist going to school, but now he is excited to attend every day. Thanks to all the teachers!",
+    rating: 5,
+  },
+  {
+    id: 4,
+    name: "Sharmin Sultana",
+    role: "Guardian of KG-2 Student",
+    comment: "An amazing institution for early education. The moral values and interactive activities they teach are truly commendable. Highly recommended for every parent.",
     rating: 5,
   },
 ];
@@ -53,7 +60,7 @@ export default function Testimonials() {
         </div>
 
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 items-stretch">
           {testimonials.map((item, index) => (
             <motion.div
               key={item.id}
