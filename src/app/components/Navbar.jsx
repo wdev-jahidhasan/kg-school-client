@@ -21,6 +21,7 @@ export default function Navbar() {
     // { name: "Home", href: "/" },
     { name: "Admission", href: "/admission" },
     { name: "Academics", href: "/academics" },
+    { name: "Teachers", href: "/teachers" },
     { name: "Results", href: "/results" },
     { name: "Notices", href: "/notices" },
   ];
@@ -63,7 +64,7 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-4 lg:gap-6">
           {navLinks.map((link) => {
             const isActive = pathname === link.href;
             return (
