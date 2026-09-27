@@ -9,6 +9,7 @@ import Marquee from "./components/Marquee";
 import PrincipalMessage from "./components/PrincipalMessage";
 import Testimonials from "./components/Testimonials";
 import ContactSection from "./components/ContactSection";
+import TeachersPanel from "./components/TeacherPanel";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Marquee></Marquee>
       <Banner></Banner>
       <PrincipalMessage></PrincipalMessage>
+      <TeachersPanel></TeachersPanel>
       {/* <Hero></Hero> */}
       <WhyChooseUs></WhyChooseUs>
       <AcademicPrograms></AcademicPrograms>
