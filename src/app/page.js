@@ -10,6 +10,7 @@ import PrincipalMessage from "./components/PrincipalMessage";
 import Testimonials from "./components/Testimonials";
 import ContactSection from "./components/ContactSection";
 import TeachersPanel from "./components/TeacherPanel";
+import SuccessStories from "./components/SuccessStories";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
       <Banner></Banner>
       <PrincipalMessage></PrincipalMessage>
       <TeachersPanel></TeachersPanel>
+      <SuccessStories></SuccessStories>
       {/* <Hero></Hero> */}
       <WhyChooseUs></WhyChooseUs>
       <AcademicPrograms></AcademicPrograms>
