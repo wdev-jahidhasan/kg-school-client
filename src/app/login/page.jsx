@@ -3,20 +3,49 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react";
+import { signIn } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login submitted:", { email, password });
+    setErrorMsg("");
+    setLoading(true);
+
+    await signIn.email(
+      {
+        email,
+        password,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Logged in successfully!");
+
+          //delay
+          setTimeout(() => {
+            setLoading(false);
+            router.push("/");
+          }, 1500);
+        },
+        onError: (ctx) => {
+          setLoading(false);
+          setErrorMsg(ctx.error.message || "Login failed!");
+        },
+      }
+    );
   };
 
   const handleGoogleLogin = () => {
-    console.log("Google login clicked");
+    toast("Google login coming soon!", { icon: "🚀" });
   };
 
   return (
@@ -42,6 +71,13 @@ export default function LoginPage() {
             Please enter your details to log in to your account.
           </p>
         </div>
+
+        {/* In-page Error Message Box */}
+        {errorMsg && (
+          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs text-center font-medium">
+            {errorMsg}
+          </div>
+        )}
 
         {/* Google Login Button */}
         <button
@@ -86,7 +122,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-3.5">
           <div>
             <label className="block text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
-              Email Address
+              Email Address <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -100,7 +136,7 @@ export default function LoginPage() {
 
           <div>
             <label className="block text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
-              Password
+              Password <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
@@ -124,10 +160,20 @@ export default function LoginPage() {
           {/* Login Submit Button */}
           <button
             type="submit"
-            className="w-full mt-1 inline-flex items-center justify-center rounded-xl bg-emerald-700 px-7 py-3 text-xs sm:text-sm font-semibold text-white shadow-md transition-all hover:bg-emerald-800 focus:outline-none"
+            disabled={loading}
+            className="w-full mt-2 inline-flex items-center justify-center rounded-xl bg-emerald-600 px-7 py-3 text-xs sm:text-sm font-semibold text-white shadow-md transition-all hover:bg-emerald-700 focus:outline-none disabled:opacity-50"
           >
-            Login
-            <ArrowRight className="ml-2 h-4 w-4" />
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Logging in...</span>
+              </div>
+            ) : (
+              <>
+                Login
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </>
+            )}
           </button>
         </form>
 
