@@ -24,7 +24,7 @@ export default function SignupPage() {
   const hasLowercase = /[a-z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
 
-  // ImageBB direct upload handler
+  // ImgBB direct upload handler
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -34,8 +34,9 @@ export default function SignupPage() {
     formData.append("image", file);
 
     try {
+      const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
       const response = await fetch(
-        `https://api.imgbb.com/1/upload?key=YOUR_IMGBB_API_KEY`,
+        `https://api.imgbb.com/1/upload?key=${apiKey}`,
         {
           method: "POST",
           body: formData,
