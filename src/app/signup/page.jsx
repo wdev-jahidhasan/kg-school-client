@@ -85,7 +85,12 @@ export default function SignupPage() {
         onSuccess: () => {
           setLoading(false);
           toast.success("Account created successfully!");
-          router.push("/");
+
+          //delay
+          setTimeout(() => {
+            setLoading(false);
+            router.push("/");
+          }, 1500);
         },
         onError: (ctx) => {
           setLoading(false);
