@@ -5,7 +5,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Eye, EyeOff, Upload, Loader2, CheckCircle2, Check, X } from "lucide-react";
-import { signUp } from "@/lib/auth-client"; // Better Auth client import
+import { signUp } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function SignupPage() {
 
     try {
       const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+
       const response = await fetch(
         `https://api.imgbb.com/1/upload?key=${apiKey}`,
         {
@@ -42,15 +44,19 @@ export default function SignupPage() {
           body: formData,
         }
       );
+
       const data = await response.json();
+
       if (data.success) {
         setImageUrl(data.data.url);
+        toast.success("Profile picture uploaded successfully!");
       } else {
-        alert("Image upload failed. Please try again.");
+        console.error("ImgBB Error Response:", data);
+        toast.error(data.error?.message || "Image upload failed. Please check your API key.");
       }
     } catch (error) {
       console.error("Error uploading image:", error);
-      alert("Something went wrong during image upload.");
+      toast.error("Something went wrong during image upload.");
     } finally {
       setUploading(false);
     }
@@ -62,7 +68,7 @@ export default function SignupPage() {
     setErrorMsg("");
 
     if (!hasMinLength || !hasUppercase || !hasLowercase || !hasNumber) {
-      alert("Please fulfill all password security requirements.");
+      toast.error("Please fulfill all password security requirements.");
       return;
     }
 
@@ -73,23 +79,25 @@ export default function SignupPage() {
         email,
         password,
         name,
-        image: imageUrl,
+        image: imageUrl || "",
       },
       {
         onSuccess: () => {
           setLoading(false);
+          toast.success("Account created successfully!");
           router.push("/dashboard");
         },
         onError: (ctx) => {
           setLoading(false);
           setErrorMsg(ctx.error.message);
+          toast.error(ctx.error.message || "Signup failed!");
         },
       }
     );
   };
 
   const handleGoogleLogin = () => {
-    console.log("Google signup clicked");
+    toast("Google signup coming soon!", { icon: "🚀" });
   };
 
   return (
