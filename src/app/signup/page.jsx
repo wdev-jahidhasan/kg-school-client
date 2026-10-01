@@ -3,15 +3,20 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowRight, Eye, EyeOff, Upload, Loader2, CheckCircle2, Check, X } from "lucide-react";
+import { signUp } from "@/lib/auth-client"; // Better Auth client import
 
 export default function SignupPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   // Password Validation Checks
   const hasMinLength = password.length >= 8;
@@ -50,13 +55,36 @@ export default function SignupPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  // Better Auth Signup Handler
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
+
     if (!hasMinLength || !hasUppercase || !hasLowercase || !hasNumber) {
       alert("Please fulfill all password security requirements.");
       return;
     }
-    console.log("Signup submitted:", { name, email, password, imageUrl });
+
+    setLoading(true);
+
+    await signUp.email(
+      {
+        email,
+        password,
+        name,
+        image: imageUrl,
+      },
+      {
+        onSuccess: () => {
+          setLoading(false);
+          router.push("/dashboard");
+        },
+        onError: (ctx) => {
+          setLoading(false);
+          setErrorMsg(ctx.error.message);
+        },
+      }
+    );
   };
 
   const handleGoogleLogin = () => {
@@ -86,6 +114,12 @@ export default function SignupPage() {
             Please fill in your details to get started.
           </p>
         </div>
+
+        {errorMsg && (
+          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs text-center">
+            {errorMsg}
+          </div>
+        )}
 
         {/* Google Login Button */}
         <button
@@ -129,13 +163,12 @@ export default function SignupPage() {
         {/* Form Fields */}
         <form onSubmit={handleSubmit} className="space-y-3.5">
 
-          {/* Profile Picture Upload Field (Moved to Top) */}
+          {/* Profile Picture Upload Field */}
           <div>
             <label className="block text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1">
               Profile Picture
             </label>
             <div className="flex items-center gap-3">
-              {/* Preview Circle */}
               <div className="relative w-12 h-12 rounded-full border-2 border-emerald-500/50 bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-sm">
                 {imageUrl ? (
                   <img src={imageUrl} alt="Profile Preview" className="w-full h-full object-cover" />
@@ -144,7 +177,6 @@ export default function SignupPage() {
                 )}
               </div>
 
-              {/* Upload Action Box */}
               <label className="flex-1 cursor-pointer flex flex-col justify-center rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all">
                 {uploading ? (
                   <div className="flex items-center gap-2 text-emerald-600 font-medium py-1">
@@ -222,7 +254,7 @@ export default function SignupPage() {
               </button>
             </div>
 
-            {/* Password Requirement Checklist (Step-by-Step) */}
+            {/* Password Requirement Checklist */}
             {password && (
               <div className="mt-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 space-y-1.5 text-[11px]">
                 <p className="font-semibold text-slate-700 dark:text-slate-300 mb-1">Password Requirements:</p>
@@ -253,15 +285,24 @@ export default function SignupPage() {
           {/* Signup Submit Button */}
           <button
             type="submit"
-            disabled={uploading}
-            className="w-full mt-2 inline-flex items-center justify-center rounded-xl bg-emerald-700 px-7 py-3 text-xs sm:text-sm font-semibold text-white shadow-md transition-all hover:bg-emerald-800 focus:outline-none disabled:opacity-50"
+            disabled={uploading || loading}
+            className="w-full mt-2 inline-flex items-center justify-center rounded-xl bg-emerald-600 px-7 py-3 text-xs sm:text-sm font-semibold text-white shadow-md transition-all hover:bg-emerald-700 focus:outline-none disabled:opacity-50"
           >
-            Sign Up
-            <ArrowRight className="ml-2 h-4 w-4" />
+            {loading ? (
+              <div className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Creating account...</span>
+              </div>
+            ) : (
+              <>
+                Sign Up
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </>
+            )}
           </button>
         </form>
 
-        {/* Redirect to Login (Same Line) */}
+        {/* Redirect to Login */}
         <div className="mt-5 text-center text-[14px] sm:text-sm text-slate-600 dark:text-slate-400 font-medium flex flex-row items-center justify-center gap-1.5 whitespace-nowrap">
           <span>Already have an account?</span>
           <Link
