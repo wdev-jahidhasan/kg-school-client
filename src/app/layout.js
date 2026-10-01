@@ -45,34 +45,20 @@ export default function RootLayout({ children }) {
             position="top-center"
             reverseOrder={false}
             toastOptions={{
-              style: {
-                background: "var(--toast-bg, #1e293b)", // Dark mode friendly default
-                color: "var(--toast-color, #f8fafc)",
-                borderRadius: "12px",
-                fontSize: "13px",
-                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2)",
-              },
+              className: "!bg-white dark:!bg-slate-900 !text-slate-900 dark:!text-slate-100 !border !border-slate-200 dark:!border-slate-800 !rounded-xl !shadow-lg !text-xs sm:!text-sm",
               success: {
                 iconTheme: {
                   primary: "#10b981",
                   secondary: "#ffffff",
                 },
-                style: {
-                  background: "#064e3b",
-                  color: "#d1fae5",
-                  border: "1px solid #047857",
-                },
+                className: "!bg-emerald-50 dark:!bg-emerald-950/80 !text-emerald-900 dark:!text-emerald-200 !border !border-emerald-200 dark:!border-emerald-800",
               },
               error: {
                 iconTheme: {
                   primary: "#ef4444",
                   secondary: "#ffffff",
                 },
-                style: {
-                  background: "#7f1d1d",
-                  color: "#fee2e2",
-                  border: "1px solid #991b1b",
-                },
+                className: "!bg-red-50 dark:!bg-red-950/80 !text-red-900 dark:!text-red-200 !border !border-red-200 dark:!border-red-800",
               },
             }}
           />
