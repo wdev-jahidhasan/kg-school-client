@@ -1,17 +1,38 @@
 export const roleBasedMenus = {
   admin: [
-    // add admin menu
+    { name: "Dashboard Overview", href: "/dashboard/admin" },
+    { name: "Manage Users", href: "/dashboard/admin/users" },
+    { name: "Teachers List", href: "/dashboard/admin/teachers" },
+    { name: "Students & Parents", href: "/dashboard/admin/students" },
+    { name: "Fee Management", href: "/dashboard/admin/fees" },
+    { name: "Notice Board", href: "/dashboard/admin/notices" },
+    { name: "School Settings", href: "/dashboard/admin/settings" },
+    { name: "Back to Home", href: "/" },
   ],
   teacher: [
-    // add teacher menu
+    { name: "Dashboard Overview", href: "/dashboard/teacher" },
+    { name: "My Classes", href: "/dashboard/teacher/classes" },
+    { name: "Student Attendance", href: "/dashboard/teacher/attendance" },
+    { name: "Gradebook / Results", href: "/dashboard/teacher/grades" },
+    { name: "Assignments", href: "/dashboard/teacher/assignments" },
+    { name: "Notice Board", href: "/dashboard/teacher/notices" },
+    { name: "Back to Home", href: "/" },
   ],
   guardian: [
-    // add guardian menu
+    { name: "Dashboard Overview", href: "/dashboard/guardian" },
+    { name: "Digital Diary", href: "/dashboard/guardian/digital-diary" },
+    { name: "Child Progress", href: "/dashboard/guardian/progress" },
+    { name: "Attendance Record", href: "/dashboard/guardian/attendance" },
+    { name: "Fee Payments", href: "/dashboard/guardian/fees" },
+    { name: "Teacher Remarks", href: "/dashboard/guardian/remarks" },
+    { name: "Back to Home", href: "/" },
   ],
   staff: [
-    // add staff menu
-  ],
-  default: [
-    // add default menu (if)
+    { name: "Dashboard Overview", href: "/dashboard/staff" },
+    { name: "Fee Collection", href: "/dashboard/staff/fees-collection" },
+    { name: "Admission Desk", href: "/dashboard/staff/admissions" },
+    { name: "Inventory", href: "/dashboard/staff/inventory" },
+    { name: "Notice Board", href: "/dashboard/staff/notices" },
+    { name: "Back to Home", href: "/" },
   ],
 };

@@ -61,7 +61,7 @@ export default function Navbar() {
   };
 
   const userRole = user?.role || "default";
-  const dashboardHref = `/${userRole}/dashboard`;
+  const dashboardHref = userRole ? `/dashboard/${userRole}` : "/dashboard";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-amber-200/60 bg-amber-50/35 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950">
