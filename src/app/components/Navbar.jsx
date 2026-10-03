@@ -34,7 +34,7 @@ export default function Navbar() {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [],);
+  }, []);
 
   const navLinks = [
     { name: "Admission", href: "/admission" },
@@ -68,10 +68,10 @@ export default function Navbar() {
       <div className="relative mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
 
         {/* Mobile: Left Actions (Menu & Theme) */}
-        <div className="flex items-center gap-2 md:hidden z-10">
+        <div className="flex items-center gap-1 md:hidden z-10">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-100/60 text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+            className="p-1.5 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none"
             aria-label="Toggle Menu"
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -81,18 +81,18 @@ export default function Navbar() {
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-100/60 text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+            className="p-1.5 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none"
             aria-label="Toggle Theme"
           >
-            {mounted && (theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />)}
+            {mounted && (theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />)}
           </motion.button>
         </div>
 
         {/* Desktop Logo & Name / Mobile Centered Logo & Name */}
         <div className="absolute left-1/2 -translate-x-1/2 md:static md:translate-x-0 flex items-center gap-2 z-0">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-700 text-white shadow-md">
-              <GraduationCap className="h-6 w-6" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-700 text-white shadow-md">
+              <GraduationCap className="h-5 w-5" />
             </div>
             <span className="text-base sm:text-xl font-bold tracking-tight text-slate-800 dark:text-white truncate">
               Junior <span className="text-emerald-600 dark:text-emerald-400">Scholars</span>
@@ -132,10 +132,10 @@ export default function Navbar() {
             whileTap={{ scale: 0.9 }}
             whileHover={{ scale: 1.1 }}
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="hidden md:flex h-9 w-9 items-center justify-center rounded-full bg-amber-100/60 text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+            className="hidden md:flex p-1.5 text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none"
             aria-label="Toggle Theme"
           >
-            {mounted && (theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />)}
+            {mounted && (theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />)}
           </motion.button>
 
           {isPending ? (
