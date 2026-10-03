@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sun, Moon, Menu, X, GraduationCap, ChevronDown, User, LogOut } from "lucide-react";
+import { Sun, Moon, Menu, X, GraduationCap, ChevronDown, User, LayoutDashboard, LogOut } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { roleBasedMenus } from "@/config/navConfig";
 import toast from "react-hot-toast";
@@ -34,7 +34,7 @@ export default function Navbar() {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [],);
 
   const navLinks = [
     { name: "Admission", href: "/admission" },
@@ -60,9 +60,8 @@ export default function Navbar() {
     });
   };
 
-  // user based menu items
   const userRole = user?.role || "default";
-  const specificMenus = roleBasedMenus[userRole] || roleBasedMenus.default;
+  const dashboardHref = `/${userRole}/dashboard`;
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-amber-200/60 bg-amber-50/35 backdrop-blur-md dark:border-slate-800 dark:bg-slate-950">
@@ -127,7 +126,7 @@ export default function Navbar() {
           })}
         </nav>
 
-        {/* Right Side Actions (Desktop Theme Toggle & Auth State / Login) */}
+        {/* Right Side Actions */}
         <div className="flex items-center gap-2 sm:gap-4 z-10">
           <motion.button
             whileTap={{ scale: 0.9 }}
@@ -142,8 +141,7 @@ export default function Navbar() {
           {isPending ? (
             <div className="h-9 w-20 bg-slate-200 dark:bg-slate-800 animate-pulse rounded-lg" />
           ) : user ? (
-            /* User Avatar & Dropdown Menu with outside Chevron Arrow */
-            <div className="relative flex items-center gap-2" ref={dropdownRef}>
+            <div className="relative flex items-center gap-1.5" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center rounded-full p-0.5 bg-white dark:bg-slate-900 border border-amber-200/60 dark:border-slate-800 hover:shadow-sm transition-all focus:outline-none"
@@ -161,10 +159,9 @@ export default function Navbar() {
                 )}
               </button>
 
-              {/* Dropdown Arrow Outside Avatar */}
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center justify-center text-slate-600 dark:text-slate-300 focus:outline-none"
+                className="flex items-center justify-center text-slate-600 dark:text-slate-300 focus:outline-none p-1"
                 aria-label="Toggle Dropdown"
               >
                 <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`} />
@@ -178,40 +175,37 @@ export default function Navbar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
-                    className="absolute right-0 top-12 mt-2 w-56 rounded-2xl bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 shadow-xl shadow-amber-950/5 dark:shadow-black/40 py-2 z-50 overflow-hidden"
+                    className="absolute right-0 top-12 mt-2 w-60 rounded-2xl bg-white dark:bg-slate-900 border border-amber-100 dark:border-slate-800 shadow-xl shadow-amber-950/5 dark:shadow-black/40 py-2 z-50 overflow-hidden"
                   >
-                    {/* Role Title Header */}
-                    <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
-                      <p className="text-xs font-semibold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
-                        {userRole.charAt(0).toUpperCase() + userRole.slice(1)} Menu
-                      </p>
+                    {/* User Info Header */}
+                    <div className="px-4 py-2.5 border-b border-slate-100 dark:border-slate-800">
                       <p className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                        {user.name}
+                        {user.name || "User 01"}
+                      </p>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                        {user.email || "user01@gmail.com"}
                       </p>
                     </div>
 
-                    {/* Common & Role-based Links */}
+                    {/* Menu Options */}
                     <div className="py-1">
                       <Link
                         href="/profile"
                         onClick={() => setDropdownOpen(false)}
-                        className="flex items-center gap-2.5 px-4 py-2 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-amber-50/60 dark:hover:bg-slate-800 transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-amber-50/60 dark:hover:bg-slate-800 transition-colors"
                       >
-                        <User className="h-4 w-4 text-slate-500" />
+                        <User className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                         My Profile
                       </Link>
 
-                      {/* Future Dynamic Role Menus */}
-                      {specificMenus.map((menu) => (
-                        <Link
-                          key={menu.name}
-                          href={menu.href}
-                          onClick={() => setDropdownOpen(false)}
-                          className="flex items-center gap-2.5 px-4 py-2 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-amber-50/60 dark:hover:bg-slate-800 transition-colors"
-                        >
-                          {menu.name}
-                        </Link>
-                      ))}
+                      <Link
+                        href={dashboardHref}
+                        onClick={() => setDropdownOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-xs sm:text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-amber-50/60 dark:hover:bg-slate-800 transition-colors"
+                      >
+                        <LayoutDashboard className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                        Dashboard
+                      </Link>
                     </div>
 
                     {/* Logout Button */}
@@ -221,10 +215,10 @@ export default function Navbar() {
                           setDropdownOpen(false);
                           handleLogout();
                         }}
-                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs sm:text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50/50 dark:hover:bg-red-950/20 transition-colors text-left"
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-xs sm:text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50/50 dark:hover:bg-red-950/20 transition-colors text-left"
                       >
                         <LogOut className="h-4 w-4" />
-                        Logout
+                        Log Out
                       </button>
                     </div>
                   </motion.div>
@@ -232,7 +226,6 @@ export default function Navbar() {
               </AnimatePresence>
             </div>
           ) : (
-            /* Login Button */
             <Link
               href="/login"
               className="inline-flex items-center justify-center rounded-lg bg-emerald-700 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium text-white shadow-sm transition-all hover:bg-emerald-800"
