@@ -4,11 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { roleBasedMenus } from "@/config/navConfig";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
+import { motion } from "framer-motion";
 
 export default function DashboardLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
 
   const pathSegments = pathname.split("/");
   const currentRole = pathSegments[2] || "guardian";
@@ -101,12 +104,28 @@ export default function DashboardLayout({ children }) {
             </h1>
           </div>
 
-          {/* Right side role info badge */}
-          <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 px-3 py-1.5 rounded-full text-xs shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span className="font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-200">
-              {currentRole}
-            </span>
+          {/* Right side role info badge & Minimal Theme Toggle */}
+          <div className="flex items-center gap-3">
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.1 }}
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="p-1.5 text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus:outline-none"
+              aria-label="Toggle Theme"
+            >
+              {theme === "dark" ? (
+                <Sun className="w-5 h-5" />
+              ) : (
+                <Moon className="w-5 h-5" />
+              )}
+            </motion.button>
+
+            <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 px-3 py-1.5 rounded-full text-xs shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-200">
+                {currentRole}
+              </span>
+            </div>
           </div>
         </header>
 
