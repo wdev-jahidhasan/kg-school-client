@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Mail, Shield, Edit3, X, Upload, CheckCircle2, Loader2, ArrowRight } from "lucide-react";
+import { User, Mail, Shield, Edit3, X, Upload, CheckCircle2, Loader2, ArrowRight, BookOpen, Layers, Hash } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
@@ -17,6 +17,9 @@ export default function ProfileDetailsPage() {
   const [imageUrl, setImageUrl] = useState("");
   const [studentName, setStudentName] = useState("");
   const [studentImageUrl, setStudentImageUrl] = useState("");
+  const [studentClass, setStudentClass] = useState("");
+  const [studentSection, setStudentSection] = useState("Morning");
+  const [studentRoll, setStudentRoll] = useState("");
 
   const [uploading, setUploading] = useState(false);
   const [studentUploading, setStudentUploading] = useState(false);
@@ -87,16 +90,29 @@ export default function ProfileDetailsPage() {
     setImageUrl(user.image || "");
     setStudentName(user.studentName || "");
     setStudentImageUrl(user.studentImage || "");
+    setStudentClass(user.studentClass || "");
+    setStudentSection(user.studentSection || "Morning");
+    setStudentRoll(user.studentRoll || "");
     setIsModalOpen(true);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Guardian validation for required student image
-    if (user?.role === "guardian" && !studentImageUrl) {
-      toast.error("Please upload student picture!");
-      return;
+    // Guardian validation for required student info
+    if (user?.role === "guardian") {
+      if (!studentImageUrl) {
+        toast.error("Please upload student picture!");
+        return;
+      }
+      if (!studentClass) {
+        toast.error("Please enter student class!");
+        return;
+      }
+      if (!studentRoll) {
+        toast.error("Please enter student roll!");
+        return;
+      }
     }
 
     setSaving(true);
@@ -117,7 +133,7 @@ export default function ProfileDetailsPage() {
 
   if (isPending) {
     return (
-      <div className="flex items-center justify-center py-16 bg-gradient-to-br from-amber-50/60 via-white to-emerald-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <div className="flex items-center justify-center py-20 bg-gradient-to-br from-amber-50/60 via-white to-emerald-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <Loader2 className="w-8 h-8 animate-spin text-emerald-600 dark:text-emerald-500" />
       </div>
     );
@@ -125,14 +141,14 @@ export default function ProfileDetailsPage() {
 
   if (!user) {
     return (
-      <div className="flex items-center justify-center py-16 text-slate-500 dark:text-slate-400">
+      <div className="flex items-center justify-center py-20 text-slate-500 dark:text-slate-400">
         Please log in to view profile details.
       </div>
     );
   }
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-amber-50/60 via-white to-emerald-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-8 px-4 sm:px-6 lg:px-8 flex justify-center">
+    <section className="relative overflow-hidden bg-gradient-to-br from-amber-50/60 via-white to-emerald-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-16 sm:py-20 px-4 sm:px-6 lg:px-8 flex justify-center">
 
       {/* Background Glows */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-300/20 dark:bg-emerald-900/10 rounded-full blur-3xl pointer-events-none" />
@@ -190,17 +206,34 @@ export default function ProfileDetailsPage() {
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
               Linked Student Information
             </h3>
-            <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800">
-              <div className="w-12 h-12 rounded-full border border-emerald-500/30 bg-slate-200 dark:bg-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0">
+            <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800">
+              <div className="w-14 h-14 rounded-full border border-emerald-500/30 bg-slate-200 dark:bg-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0">
                 {user.studentImage ? (
                   <img src={user.studentImage} alt="Student" className="w-full h-full object-cover" />
                 ) : (
-                  <User className="w-5 h-5 text-slate-400" />
+                  <User className="w-6 h-6 text-slate-400" />
                 )}
               </div>
-              <div>
-                <p className="text-sm font-semibold text-slate-800 dark:text-white">{user.studentName || "Not Assigned"}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Student Profile</p>
+              <div className="flex-1 space-y-2">
+                <div>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">{user.studentName || "Not Assigned"}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Student Profile</p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 pt-1 border-t border-slate-200/60 dark:border-slate-800">
+                  <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
+                    <BookOpen className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
+                    <span>Class: <strong className="font-semibold">{user.studentClass || "N/A"}</strong></span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
+                    <Layers className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
+                    <span>Sec: <strong className="font-semibold">{user.studentSection || "N/A"}</strong></span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
+                    <Hash className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
+                    <span>Roll: <strong className="font-semibold">{user.studentRoll || "N/A"}</strong></span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -305,6 +338,53 @@ export default function ProfileDetailsPage() {
                         onChange={(e) => setStudentName(e.target.value)}
                         className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
                       />
+                    </div>
+
+                    {/* Class & Roll Grid */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                          Class <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={studentClass}
+                          onChange={(e) => setStudentClass(e.target.value)}
+                          placeholder="e.g. 2"
+                          className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                          Roll <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={studentRoll}
+                          onChange={(e) => setStudentRoll(e.target.value)}
+                          placeholder="e.g. 05"
+                          className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Section Dropdown (Morning / Day) */}
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                        Section <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        required
+                        value={studentSection}
+                        onChange={(e) => setStudentSection(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
+                      >
+                        <option value="Morning">Morning</option>
+                        <option value="Day">Day</option>
+                      </select>
                     </div>
 
                     {/* Student Picture Upload (Required) */}
