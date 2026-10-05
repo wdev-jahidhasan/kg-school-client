@@ -284,7 +284,7 @@ export default function ProfileDetailsPage() {
                           <Loader2 className="h-4 w-4 animate-spin" />
                           <span>Uploading...</span>
                         </div>
-                      ) : imageUrl ? (
+                      ) : imageUrl && imageUrl !== user.image ? (
                         <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-500 font-semibold py-1">
                           <CheckCircle2 className="h-4 w-4" />
                           <span>Uploaded</span>
@@ -292,7 +292,7 @@ export default function ProfileDetailsPage() {
                       ) : (
                         <div className="flex items-center gap-2 py-1 text-slate-500 dark:text-slate-400">
                           <Upload className="h-4 w-4 text-emerald-600 dark:text-emerald-500" />
-                          <span>Update profile picture</span>
+                          <span>Choose new photo</span>
                         </div>
                       )}
                       <input
@@ -351,7 +351,7 @@ export default function ProfileDetailsPage() {
                           required
                           value={studentClass}
                           onChange={(e) => setStudentClass(e.target.value)}
-                          placeholder="e.g. 2"
+                          placeholder="e.g. 10"
                           className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
                         />
                       </div>
@@ -407,7 +407,7 @@ export default function ProfileDetailsPage() {
                               <Loader2 className="h-4 w-4 animate-spin" />
                               <span>Uploading...</span>
                             </div>
-                          ) : studentImageUrl ? (
+                          ) : studentImageUrl && studentImageUrl !== user.studentImage ? (
                             <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-500 font-semibold py-1">
                               <CheckCircle2 className="h-4 w-4" />
                               <span>Uploaded</span>
@@ -415,7 +415,7 @@ export default function ProfileDetailsPage() {
                           ) : (
                             <div className="flex items-center gap-2 py-1 text-slate-500 dark:text-slate-400">
                               <Upload className="h-4 w-4 text-emerald-600 dark:text-emerald-500" />
-                              <span>Upload student photo</span>
+                              <span>Choose new photo</span>
                             </div>
                           )}
                           <input
