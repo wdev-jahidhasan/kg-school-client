@@ -34,25 +34,20 @@ export default function ProfileDetailsPage() {
     const formData = new FormData();
     formData.append("image", file);
 
-    try {
-      const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-      const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
-        method: "POST",
-        body: formData,
-      });
+    const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+    const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+      method: "POST",
+      body: formData,
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.success) {
-        setImageUrl(data.data.url);
-      } else {
-        toast.error(data.error?.message || "Image upload failed.");
-      }
-    } catch (error) {
-      toast.error("Something went wrong during image upload.");
-    } finally {
-      setUploading(false);
+    if (data.success) {
+      setImageUrl(data.data.url);
+    } else {
+      toast.error(data.error?.message || "Image upload failed.");
     }
+    setUploading(false);
   };
 
   const handleStudentImageUpload = async (e) => {
@@ -63,25 +58,20 @@ export default function ProfileDetailsPage() {
     const formData = new FormData();
     formData.append("image", file);
 
-    try {
-      const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
-      const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
-        method: "POST",
-        body: formData,
-      });
+    const apiKey = process.env.NEXT_PUBLIC_IMGBB_API_KEY;
+    const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+      method: "POST",
+      body: formData,
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.success) {
-        setStudentImageUrl(data.data.url);
-      } else {
-        toast.error(data.error?.message || "Student image upload failed.");
-      }
-    } catch (error) {
-      toast.error("Something went wrong during image upload.");
-    } finally {
-      setStudentUploading(false);
+    if (data.success) {
+      setStudentImageUrl(data.data.url);
+    } else {
+      toast.error(data.error?.message || "Student image upload failed.");
     }
+    setStudentUploading(false);
   };
 
   const handleOpenModal = () => {
@@ -96,39 +86,41 @@ export default function ProfileDetailsPage() {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Guardian validation for required student info
-    if (user?.role === "guardian") {
-      if (!studentImageUrl) {
-        toast.error("Please upload student picture!");
-        return;
-      }
-      if (!studentClass) {
-        toast.error("Please enter student class!");
-        return;
-      }
-      if (!studentRoll) {
-        toast.error("Please enter student roll!");
-        return;
-      }
+    if (!user?.email) {
+      toast.error("User email not found. Please log in again.");
+      return;
     }
 
     setSaving(true);
 
-    setTimeout(() => {
-      setSaving(false);
+    const studentPayload = {
+      studentName,
+      studentImage: studentImageUrl,
+      studentClass,
+      studentSection,
+      studentRoll,
+    };
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+    const response = await fetch(`${apiUrl}/api/users/student-info/${user.email}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(studentPayload),
+    });
+
+    if (response.ok) {
+      toast.success("Student info updated successfully!");
       setIsModalOpen(false);
-      toast("Add edit functionality first", {
-        icon: "⚠️",
-        style: {
-          borderRadius: '10px',
-          background: '#333',
-          color: '#fff',
-        },
-      });
-    }, 1000);
+    } else {
+      toast.error("Failed to update student info.");
+    }
+
+    setSaving(false);
   };
 
   if (isPending) {
@@ -284,7 +276,7 @@ export default function ProfileDetailsPage() {
                           <Loader2 className="h-4 w-4 animate-spin" />
                           <span>Uploading...</span>
                         </div>
-                      ) : imageUrl && imageUrl !== user.image ? (
+                      ) : imageUrl && imageUrl !== user?.image ? (
                         <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-500 font-semibold py-1">
                           <CheckCircle2 className="h-4 w-4" />
                           <span>Uploaded</span>
@@ -320,13 +312,13 @@ export default function ProfileDetailsPage() {
                 </div>
 
                 {/* Guardian Specific Options */}
-                {user.role === "guardian" && (
+                {user?.role === "guardian" && (
                   <div className="space-y-4 pt-3 border-t border-slate-100 dark:border-slate-800">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                       Student Details
                     </h4>
 
-                    {/* Student Name (Required) */}
+                    {/* Student Name */}
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                         Student Name <span className="text-red-500">*</span>
@@ -351,7 +343,7 @@ export default function ProfileDetailsPage() {
                           required
                           value={studentClass}
                           onChange={(e) => setStudentClass(e.target.value)}
-                          placeholder="e.g. 10"
+                          placeholder="e.g. Nursery, Two"
                           className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
                         />
                       </div>
@@ -371,7 +363,7 @@ export default function ProfileDetailsPage() {
                       </div>
                     </div>
 
-                    {/* Section Dropdown (Morning / Day) */}
+                    {/* Section Dropdown */}
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                         Section <span className="text-red-500">*</span>
@@ -387,7 +379,7 @@ export default function ProfileDetailsPage() {
                       </select>
                     </div>
 
-                    {/* Student Picture Upload (Required) */}
+                    {/* Student Picture Upload */}
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                         Student Picture <span className="text-red-500">*</span>
@@ -407,7 +399,7 @@ export default function ProfileDetailsPage() {
                               <Loader2 className="h-4 w-4 animate-spin" />
                               <span>Uploading...</span>
                             </div>
-                          ) : studentImageUrl && studentImageUrl !== user.studentImage ? (
+                          ) : studentImageUrl && studentImageUrl !== user?.studentImage ? (
                             <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-500 font-semibold py-1">
                               <CheckCircle2 className="h-4 w-4" />
                               <span>Uploaded</span>
