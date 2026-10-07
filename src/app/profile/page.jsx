@@ -341,32 +341,49 @@ export default function ProfileDetailsPage() {
 
                     {/* Class & Roll Grid */}
                     <div className="grid grid-cols-2 gap-3">
+                      {/* Class Dropdown */}
                       <div>
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                           Class <span className="text-red-500">*</span>
                         </label>
-                        <input
-                          type="text"
+                        <select
                           required
                           value={studentClass}
                           onChange={(e) => setStudentClass(e.target.value)}
-                          placeholder="e.g. Nursery, Two"
                           className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
-                        />
+                        >
+                          <option value="" disabled>Select Class</option>
+                          <option value="Play">Play</option>
+                          <option value="Nursery">Nursery</option>
+                          <option value="One">One</option>
+                          <option value="Two">Two</option>
+                          <option value="Three">Three</option>
+                          <option value="Four">Four</option>
+                          <option value="Five">Five</option>
+                        </select>
                       </div>
 
+                      {/* Roll Dropdown (01 to 20) */}
                       <div>
                         <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                           Roll <span className="text-red-500">*</span>
                         </label>
-                        <input
-                          type="text"
+                        <select
                           required
                           value={studentRoll}
                           onChange={(e) => setStudentRoll(e.target.value)}
-                          placeholder="e.g. 05"
                           className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
-                        />
+                        >
+                          <option value="" disabled>Select Roll</option>
+                          {Array.from({ length: 20 }, (_, index) => {
+                            const rollNum = String(index + 1).padStart(2, '0');
+                            return (
+                              <option key={rollNum} value={rollNum}>
+                                {rollNum}
+                              </option>
+                            );
+                          })}
+                        </select>
                       </div>
                     </div>
 
