@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Mail, Shield, Edit3, X, Upload, CheckCircle2, Loader2, ArrowRight, BookOpen, Layers, Hash } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
@@ -8,8 +8,9 @@ import toast from "react-hot-toast";
 
 export default function ProfileDetailsPage() {
   const { data: session, isPending } = useSession();
-  const user = session?.user;
+  const sessionUser = session?.user;
 
+  const [dbUser, setDbUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Edit Form States
@@ -18,12 +19,29 @@ export default function ProfileDetailsPage() {
   const [studentName, setStudentName] = useState("");
   const [studentImageUrl, setStudentImageUrl] = useState("");
   const [studentClass, setStudentClass] = useState("");
-  const [studentSection, setStudentSection] = useState("Morning");
+  const [studentSection, setStudentSection] = useState("");
   const [studentRoll, setStudentRoll] = useState("");
 
   const [uploading, setUploading] = useState(false);
   const [studentUploading, setStudentUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // Fetch latest user profile from database
+  useEffect(() => {
+    if (sessionUser?.email) {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      fetch(`${apiUrl}/api/users/profile/${sessionUser.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setDbUser(data.user);
+          }
+        })
+        .catch((err) => console.error("Failed to fetch user profile:", err));
+    }
+  }, [sessionUser?.email]);
+
+  const user = dbUser || sessionUser;
 
   // ImgBB Upload Handler for User Picture
   const handleImageUpload = async (e) => {
@@ -78,11 +96,14 @@ export default function ProfileDetailsPage() {
     if (!user) return;
     setName(user.name || "");
     setImageUrl(user.image || "");
-    setStudentName(user.studentName || "");
-    setStudentImageUrl(user.studentImage || "");
-    setStudentClass(user.studentClass || "");
-    setStudentSection(user.studentSection || "Morning");
-    setStudentRoll(user.studentRoll || "");
+
+    // Setting student info from nested database object
+    setStudentName(user.studentInfo?.studentName || "");
+    setStudentImageUrl(user.studentInfo?.studentImage || "");
+    setStudentClass(user.studentInfo?.studentClass || "");
+    setStudentSection(user.studentInfo?.studentSection || "");
+    setStudentRoll(user.studentInfo?.studentRoll || "");
+
     setIsModalOpen(true);
   };
 
@@ -207,30 +228,30 @@ export default function ProfileDetailsPage() {
             </h3>
             <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800">
               <div className="w-14 h-14 rounded-full border border-emerald-500/30 bg-slate-200 dark:bg-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0">
-                {user.studentImage ? (
-                  <img src={user.studentImage} alt="Student" className="w-full h-full object-cover" />
+                {user.studentInfo?.studentImage ? (
+                  <img src={user.studentInfo.studentImage} alt="Student" className="w-full h-full object-cover" />
                 ) : (
                   <User className="w-6 h-6 text-slate-400" />
                 )}
               </div>
               <div className="flex-1 space-y-2">
                 <div>
-                  <p className="text-sm font-bold text-slate-900 dark:text-white">{user.studentName || "Not Assigned"}</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">{user.studentInfo?.studentName || "Not Assigned"}</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">Student Profile</p>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 pt-1 border-t border-slate-200/60 dark:border-slate-800">
                   <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
                     <BookOpen className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
-                    <span>Class: <strong className="font-semibold">{user.studentClass || "N/A"}</strong></span>
+                    <span>Class: <strong className="font-semibold">{user.studentInfo?.studentClass || "N/A"}</strong></span>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
                     <Layers className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
-                    <span>Sec: <strong className="font-semibold">{user.studentSection || "N/A"}</strong></span>
+                    <span>Sec: <strong className="font-semibold">{user.studentInfo?.studentSection || "N/A"}</strong></span>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
                     <Hash className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
-                    <span>Roll: <strong className="font-semibold">{user.studentRoll || "N/A"}</strong></span>
+                    <span>Roll: <strong className="font-semibold">{user.studentInfo?.studentRoll || "N/A"}</strong></span>
                   </div>
                 </div>
               </div>
@@ -398,6 +419,7 @@ export default function ProfileDetailsPage() {
                         onChange={(e) => setStudentSection(e.target.value)}
                         className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
                       >
+                        <option value="" disabled>Select Section</option>
                         <option value="Morning">Morning</option>
                         <option value="Day">Day</option>
                       </select>
@@ -423,7 +445,7 @@ export default function ProfileDetailsPage() {
                               <Loader2 className="h-4 w-4 animate-spin" />
                               <span>Uploading...</span>
                             </div>
-                          ) : studentImageUrl && studentImageUrl !== user?.studentImage ? (
+                          ) : studentImageUrl && studentImageUrl !== user?.studentInfo?.studentImage ? (
                             <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-500 font-semibold py-1">
                               <CheckCircle2 className="h-4 w-4" />
                               <span>Uploaded</span>
