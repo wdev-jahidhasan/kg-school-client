@@ -95,29 +95,36 @@ export default function ProfileDetailsPage() {
 
     setSaving(true);
 
-    const studentPayload = {
-      studentName,
-      studentImage: studentImageUrl,
-      studentClass,
-      studentSection,
-      studentRoll,
+    const fullProfilePayload = {
+      name: name,
+      image: imageUrl,
+      studentInfo: user?.role === "guardian" ? {
+        studentName,
+        studentImage: studentImageUrl,
+        studentClass,
+        studentSection,
+        studentRoll,
+      } : undefined,
     };
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-    const response = await fetch(`${apiUrl}/api/users/student-info/${user.email}`, {
+    const response = await fetch(`${apiUrl}/api/users/update-profile/${user.email}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(studentPayload),
+      body: JSON.stringify(fullProfilePayload),
     });
 
-    if (response.ok) {
-      toast.success("Student info updated successfully!");
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      toast.success("Profile updated successfully!");
       setIsModalOpen(false);
+      window.location.reload();
     } else {
-      toast.error("Failed to update student info.");
+      toast.error(data.message || "Failed to update profile.");
     }
 
     setSaving(false);
