@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 export const auth = betterAuth({
-  baseURL: "http://localhost:8000",
+  baseURL: "http://localhost:3000",
   trustedOrigins: ["http://localhost:3000"],
   database: mongodbAdapter(client.db("junior-scholars")),
 
