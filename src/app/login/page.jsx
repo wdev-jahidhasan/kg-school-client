@@ -44,8 +44,16 @@ export default function LoginPage() {
     );
   };
 
-  const handleGoogleLogin = () => {
-    toast("Google login coming soon!", { icon: "🚀" });
+  const handleGoogleLogin = async () => {
+    try {
+      await signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+    } catch (err) {
+      toast.error("Google login failed!");
+      console.error(err);
+    }
   };
 
   return (

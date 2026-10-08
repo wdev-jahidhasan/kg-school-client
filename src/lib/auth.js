@@ -16,16 +16,29 @@ if (process.env.NODE_ENV === "development") {
 }
 
 export const auth = betterAuth({
+  baseURL: "http://localhost:8000",
+  trustedOrigins: ["http://localhost:3000"],
   database: mongodbAdapter(client.db("junior-scholars")),
 
   emailAndPassword: {
     enabled: true,
+  },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    },
   },
   user: {
     additionalFields: {
       role: {
         type: "string",
         defaultValue: "guardian",
+        required: false,
+      },
+      studentInfo: {
+        type: "string",
+        defaultValue: null,
         required: false,
       },
     },
