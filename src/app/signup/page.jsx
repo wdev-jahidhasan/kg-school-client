@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Eye, EyeOff, Upload, Loader2, CheckCircle2, Check, X } from "lucide-react";
-import { signUp } from "@/lib/auth-client";
+import { signIn, signUp } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function SignupPage() {
@@ -101,8 +101,16 @@ export default function SignupPage() {
     );
   };
 
-  const handleGoogleLogin = () => {
-    toast("Google signup coming soon!", { icon: "🚀" });
+  const handleGoogleLogin = async () => {
+    try {
+      await signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+    } catch (err) {
+      toast.error("Google login failed!");
+      console.error(err);
+    }
   };
 
   return (
