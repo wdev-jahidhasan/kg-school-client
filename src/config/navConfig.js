@@ -13,7 +13,7 @@ export const roleBasedMenus = {
     { name: "Dashboard Overview", href: "/dashboard/teacher" },
     { name: "My Classes", href: "/dashboard/teacher/classes" },
     { name: "Student Attendance", href: "/dashboard/teacher/attendance" },
-    { name: "Gradebook / Results", href: "/dashboard/teacher/grades" },
+    { name: "Results", href: "/dashboard/teacher/grades" },
     { name: "Assignments", href: "/dashboard/teacher/assignments" },
     { name: "Notice Board", href: "/dashboard/teacher/notices" },
     { name: "Back to Home", href: "/" },
@@ -25,7 +25,7 @@ export const roleBasedMenus = {
     { name: "Attendance Record", href: "/dashboard/guardian/attendance" },
     { name: "Fee Payments", href: "/dashboard/guardian/fees" },
     { name: "Teacher Remarks", href: "/dashboard/guardian/remarks" },
-    { name: "Back to Home", href: "/" },
+    { name: "Notice Board", href: "/dashboard/guardian/notices" },
   ],
   staff: [
     { name: "Dashboard Overview", href: "/dashboard/staff" },
@@ -33,6 +33,7 @@ export const roleBasedMenus = {
     { name: "Admission Desk", href: "/dashboard/staff/admissions" },
     { name: "Inventory", href: "/dashboard/staff/inventory" },
     { name: "Notice Board", href: "/dashboard/staff/notices" },
+    { name: "Publish Notice", href: "/dashboard/staff/publish-notice" },
     { name: "Back to Home", href: "/" },
   ],
 };
