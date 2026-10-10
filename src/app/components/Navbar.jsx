@@ -7,7 +7,6 @@ import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, Menu, X, GraduationCap, ChevronDown, User, LayoutDashboard, LogOut } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
-import { roleBasedMenus } from "@/config/navConfig";
 import toast from "react-hot-toast";
 
 export default function Navbar() {
@@ -40,7 +39,7 @@ export default function Navbar() {
     { name: "Admission", href: "/admission" },
     { name: "Academics", href: "/academics" },
     { name: "Teachers", href: "/teachers" },
-    { name: "Results", href: "/results" },
+    { name: "Success", href: "/success" },
     { name: "Notices", href: "/notices" },
   ];
 
