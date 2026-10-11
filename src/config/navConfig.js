@@ -39,6 +39,7 @@ export const roleBasedMenus = {
     { name: "Admission Desk", href: "/dashboard/staff/admissions" },
     { name: "Inventory", href: "/dashboard/staff/inventory" },
     { name: "Notice Board", href: "/dashboard/staff/notices" },
+    { name: "Write Diary", href: "/dashboard/staff/write-diary" },
     { name: "Publish Notice", href: "/dashboard/staff/publish-notice" },
     { name: "Back to Home", href: "/" },
   ],
