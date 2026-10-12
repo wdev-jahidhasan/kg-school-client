@@ -7,6 +7,7 @@ import { Send, FileText, Users, Calendar, CheckCircle2, Tag } from "lucide-react
 const audienceOptions = [
   "Public",
   "Public & Logged-in",
+  "Only Logged-in",
   "Guardian",
   "Teacher",
   "Staff",
