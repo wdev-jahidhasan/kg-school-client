@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Bell, Download, X, ArrowRight, FileText } from "lucide-react";
+import { getFilteredNotices } from "@/utils/noticeFilter";
 
 const noticeCategories = ["All", "General", "Admission", "Exam", "Events"];
 
@@ -19,9 +20,7 @@ export default function NoticesPage() {
         const data = await response.json();
 
         if (data.success) {
-          const publicNotices = data.notices.filter(
-            (notice) => notice.audience === "Public" || notice.audience === "Public & Logged-in"
-          );
+          const publicNotices = getFilteredNotices(data.notices, null, "public_page");
           setNoticesData(publicNotices);
         }
       } catch (error) {
