@@ -1,12 +1,40 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function Marquee() {
+  const [dynamicNotices, setDynamicNotices] = useState([]);
+
+  useEffect(() => {
+    const fetchLatestNotices = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/notices`);
+        if (!res.ok) return;
+
+        const result = await res.json();
+        const data = result.notices || [];
+
+        const allowedAudiences = ["Public", "Public & Logged-in"];
+        const publicNotices = data
+          .filter((notice) => allowedAudiences.includes(notice.audience))
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 3)
+          .map((notice) => notice.title);
+
+        setDynamicNotices(publicNotices);
+      } catch (error) {
+        console.error("Error fetching marquee notices:", error);
+      }
+    };
+
+    fetchLatestNotices();
+  }, []);
+
   const notices = [
     "Welcome to the official website of Junior Scholars",
-    "Admission is going on for upcoming session",
+    ...dynamicNotices,
     "Please check the notice board for regular updates",
   ];
 
@@ -16,13 +44,17 @@ export default function Marquee() {
 
         {/* Left Side: Marquee with Arrows */}
         <div className="flex items-center gap-2 sm:gap-4 overflow-hidden w-full">
+
           {/* Mobile-friendly compact arrow box */}
           <div className="hidden xs:flex items-center -space-x-2 shrink-0 bg-slate-50 dark:bg-slate-900 px-2 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
             {[0, 1, 2].map((index) => (
               <ChevronRight
                 key={index}
                 className="w-3.5 h-3.5 text-amber-500 font-extrabold stroke-[3] animate-pulse"
-                style={{ animationDelay: `${index * 100}ms`, animationDuration: '700ms' }}
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                  animationDuration: "700ms",
+                }}
               />
             ))}
           </div>
@@ -30,6 +62,8 @@ export default function Marquee() {
           {/* Marquee Ticker Effect */}
           <div className="relative overflow-hidden w-full whitespace-nowrap">
             <div className="inline-block animate-marquee text-xs sm:text-base font-bold text-amber-600 dark:text-amber-500 tracking-wide">
+
+              {/* Primary Loop */}
               <div className="inline-flex items-center">
                 {notices.map((notice, idx) => (
                   <span key={idx} className="inline-flex items-center mr-8 sm:mr-16">
@@ -41,6 +75,7 @@ export default function Marquee() {
                 ))}
               </div>
 
+              {/* Duplicate Loop for Seamless Infinite Scroll */}
               <div className="inline-flex items-center ml-8 sm:ml-16">
                 {notices.map((notice, idx) => (
                   <span key={`dup-${idx}`} className="inline-flex items-center mr-8 sm:mr-16">
@@ -51,6 +86,7 @@ export default function Marquee() {
                   </span>
                 ))}
               </div>
+
             </div>
           </div>
         </div>
@@ -75,7 +111,7 @@ export default function Marquee() {
         }
         .animate-marquee {
           display: inline-block;
-          animation: marquee 20s linear infinite;
+          animation: marquee 25s linear infinite;
         }
         .animate-marquee:hover {
           animation-play-state: paused;
