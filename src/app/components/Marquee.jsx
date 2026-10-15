@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 export default function Marquee() {
   const [dynamicNotices, setDynamicNotices] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     const fetchLatestNotices = async () => {
@@ -26,6 +27,8 @@ export default function Marquee() {
         setDynamicNotices(publicNotices);
       } catch (error) {
         console.error("Error fetching marquee notices:", error);
+      } finally {
+        setIsLoaded(true);
       }
     };
 
@@ -61,7 +64,7 @@ export default function Marquee() {
 
           {/* Marquee Ticker Effect */}
           <div className="relative overflow-hidden w-full whitespace-nowrap">
-            <div className="inline-block animate-marquee text-xs sm:text-base font-bold text-amber-600 dark:text-amber-500 tracking-wide">
+            <div className={`inline-block text-xs sm:text-base font-bold text-amber-600 dark:text-amber-500 tracking-wide ${isLoaded ? "animate-marquee" : ""}`}>
 
               {/* Primary Loop */}
               <div className="inline-flex items-center">
@@ -111,7 +114,7 @@ export default function Marquee() {
         }
         .animate-marquee {
           display: inline-block;
-          animation: marquee 25s linear infinite;
+          animation: marquee 50s linear infinite;
         }
         .animate-marquee:hover {
           animation-play-state: paused;
