@@ -131,10 +131,10 @@ export default function Banner() {
 
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full sm:w-auto">
               <Link
-                href="/notices"
+                href="/success"
                 className="w-full sm:w-auto inline-flex items-center justify-center rounded-2xl border-2 border-amber-200 bg-white/80 dark:border-slate-700 dark:bg-slate-900/85 backdrop-blur px-7 py-3.5 text-sm sm:text-base font-bold text-slate-800 dark:text-slate-200 shadow-sm hover:bg-amber-50 dark:hover:bg-slate-800 transition-all"
               >
-                See Notices
+                Our Success Stories
               </Link>
             </motion.div>
           </motion.div>
