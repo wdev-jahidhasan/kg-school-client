@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Hero from "./components/Hero";
 import Banner from "./components/Banner";
 import WhyChooseUs from "./components/WhyChooseUs";
 import AcademicPrograms from "./components/AcademicPrograms";
@@ -8,9 +6,9 @@ import FAQSection from "./components/FaqSection";
 import Marquee from "./components/Marquee";
 import PrincipalMessage from "./components/PrincipalMessage";
 import Testimonials from "./components/Testimonials";
-import ContactSection from "./components/ContactSection";
 import TeachersPanel from "./components/TeacherPanel";
 import SuccessStories from "./components/SuccessStories";
+import HeroCarousel from "./components/HeroCarousel";
 
 export default function Home() {
   return (
@@ -20,7 +18,7 @@ export default function Home() {
       <PrincipalMessage></PrincipalMessage>
       <TeachersPanel></TeachersPanel>
       <SuccessStories></SuccessStories>
-      {/* <Hero></Hero> */}
+      {/* <HeroCarousel></HeroCarousel> */}
       <WhyChooseUs></WhyChooseUs>
       <AcademicPrograms></AcademicPrograms>
       <PhotoGallery></PhotoGallery>

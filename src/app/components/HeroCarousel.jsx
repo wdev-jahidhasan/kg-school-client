@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
-// 5 ta random child education related unsplash images
+// random child education related unsplash images
 const carouselImages = [
   "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1600&q=80",
   "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=1600&q=80",
@@ -15,7 +15,7 @@ const carouselImages = [
   "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1600&q=80",
 ];
 
-export default function Hero() {
+export default function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Auto slide every 5 seconds
@@ -64,7 +64,7 @@ export default function Hero() {
         </AnimatePresence>
       </div>
 
-      {/* Left & Right Navigation Arrows (Responsive & Safe from overlapping text) */}
+      {/* Left & Right Navigation Arrows */}
       <div className="absolute inset-0 z-20 flex items-center justify-between px-3 sm:px-6 lg:px-10 pointer-events-none">
         <button
           onClick={handlePrev}
@@ -110,10 +110,10 @@ export default function Hero() {
             </Link>
 
             <Link
-              href="/notices"
+              href="/success"
               className="w-full sm:w-auto inline-flex items-center justify-center rounded-xl border border-amber-300 bg-white/90 dark:border-slate-700 dark:bg-slate-900/90 backdrop-blur px-7 py-4 text-sm font-semibold text-slate-700 dark:text-slate-200 shadow-sm transition-all hover:bg-amber-50 dark:hover:bg-slate-800"
             >
-              See Notices
+              Our Success Stories
             </Link>
           </div>
 
@@ -123,11 +123,10 @@ export default function Hero() {
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
-                  currentIndex === idx
-                    ? "w-8 bg-emerald-600 dark:bg-emerald-400"
-                    : "w-2.5 bg-slate-300/80 dark:bg-slate-700 hover:bg-slate-400"
-                }`}
+                className={`h-2.5 rounded-full transition-all duration-300 ${currentIndex === idx
+                  ? "w-8 bg-emerald-600 dark:bg-emerald-400"
+                  : "w-2.5 bg-slate-300/80 dark:bg-slate-700 hover:bg-slate-400"
+                  }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
