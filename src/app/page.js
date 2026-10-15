@@ -9,11 +9,13 @@ import Testimonials from "./components/Testimonials";
 import TeachersPanel from "./components/TeacherPanel";
 import SuccessStories from "./components/SuccessStories";
 import HeroCarousel from "./components/HeroCarousel";
+import SpecialEvent from "./components/SpecialEvent";
 
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <Marquee></Marquee>
+      {/* <SpecialEvent></SpecialEvent> */}
       <Banner></Banner>
       <PrincipalMessage></PrincipalMessage>
       <TeachersPanel></TeachersPanel>
