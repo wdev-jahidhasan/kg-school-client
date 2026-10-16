@@ -2,76 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { BookOpen, Users, Award, Sparkles, GraduationCap, ArrowRight, Star } from "lucide-react";
-
-// Featured Special Class (Play Group)
-const featuredProgram = {
-  id: 1,
-  title: "Play Group",
-  age: "Ages 4 - 5 Years",
-  description: "A joyful introduction to school life where toddlers learn socialization, sharing, and basic motor skills through interactive play and creative exploration.",
-  icon: <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-600 dark:text-emerald-400" />,
-  bg: "bg-gradient-to-br from-emerald-50 via-teal-50 to-emerald-100/50 dark:from-emerald-950/40 dark:via-slate-900 dark:to-teal-950/30",
-  border: "border-2 border-emerald-400/80 dark:border-emerald-500/50",
-};
-
-// Remaining 6 Classes
-const programs = [
-  {
-    id: 2,
-    title: "Nursery",
-    age: "Ages 5 - 6 Years",
-    description: "Focuses on early language development, pre-math concepts, alphabet exploration, and creative expression.",
-    icon: <BookOpen className="w-5 h-5 sm:w-7 sm:h-7 text-amber-600 dark:text-amber-400" />,
-    bg: "bg-amber-50 dark:bg-amber-950/20",
-    border: "border-amber-200 dark:border-amber-900/50",
-  },
-  {
-    id: 3,
-    title: "Class One",
-    age: "Ages 6 - 7 Years",
-    description: "Builds confidence in reading, writing, basic arithmetic, and problem-solving through structured lessons.",
-    icon: <Users className="w-5 h-5 sm:w-7 sm:h-7 text-sky-600 dark:text-sky-400" />,
-    bg: "bg-sky-50 dark:bg-sky-950/20",
-    border: "border-sky-200 dark:border-sky-900/50",
-  },
-  {
-    id: 4,
-    title: "Class Two",
-    age: "Ages 7 - 8 Years",
-    description: "Expands core academic subjects with creative thinking, enhanced vocabulary, and group activities.",
-    icon: <Award className="w-5 h-5 sm:w-7 sm:h-7 text-rose-600 dark:text-rose-400" />,
-    bg: "bg-rose-50 dark:bg-rose-950/20",
-    border: "border-rose-200 dark:border-rose-900/50",
-  },
-  {
-    id: 5,
-    title: "Class Three",
-    age: "Ages 8 - 9 Years",
-    description: "Introduces advanced problem-solving, independent study habits, and analytical thinking.",
-    icon: <GraduationCap className="w-5 h-5 sm:w-7 sm:h-7 text-indigo-600 dark:text-indigo-400" />,
-    bg: "bg-indigo-50 dark:bg-indigo-950/20",
-    border: "border-indigo-200 dark:border-indigo-900/50",
-  },
-  {
-    id: 6,
-    title: "Class Four",
-    age: "Ages 9 - 10 Years",
-    description: "Strengthens concepts in science, mathematics, and humanities while fostering leadership.",
-    icon: <Sparkles className="w-5 h-5 sm:w-7 sm:h-7 text-teal-600 dark:text-teal-400" />,
-    bg: "bg-teal-50 dark:bg-teal-950/20",
-    border: "border-teal-200 dark:border-teal-900/50",
-  },
-  {
-    id: 7,
-    title: "Class Five",
-    age: "Ages 10 - 11 Years",
-    description: "Comprehensive primary education preparation ensuring a seamless transition to middle school.",
-    icon: <BookOpen className="w-5 h-5 sm:w-7 sm:h-7 text-purple-600 dark:text-purple-400" />,
-    bg: "bg-purple-50 dark:bg-purple-950/20",
-    border: "border-purple-200 dark:border-purple-900/50",
-  },
-];
+import { ArrowRight, Star } from "lucide-react";
+import programs, { featuredProgram } from "./ClassesInfo";
 
 export default function AcademicPrograms() {
   return (
@@ -98,16 +30,15 @@ export default function AcademicPrograms() {
           </motion.div>
         </div>
 
-        {/* Featured Special Card: Play Group */}
+        {/* Featured Card: Play Group */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           whileHover={{ y: -4 }}
-          className={`mb-6 sm:mb-8 p-5 sm:p-10 rounded-2xl sm:rounded-3xl ${featuredProgram.bg} ${featuredProgram.border} shadow-lg relative overflow-hidden`}
+          className={`mb-6 sm:mb-8 p-5 sm:p-10 rounded-2xl sm:rounded-3xl ${featuredProgram.gradient} shadow-lg relative overflow-hidden`}
         >
-          {/* Mobile Age Badge & Star Icon Header */}
           <div className="flex items-center justify-between mb-3 md:hidden">
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-200/80 dark:bg-emerald-900/80 text-emerald-900 dark:text-emerald-200">
               {featuredProgram.age}
@@ -117,7 +48,6 @@ export default function AcademicPrograms() {
             </div>
           </div>
 
-          {/* Desktop Star Icon Top Right */}
           <div className="hidden md:flex absolute top-6 right-6 p-2 rounded-full bg-emerald-600 text-white shadow-md">
             <Star className="w-4 h-4 fill-white" />
           </div>
@@ -166,7 +96,6 @@ export default function AcademicPrograms() {
               whileHover={{ y: -5 }}
               className={`p-3.5 sm:p-6 rounded-xl sm:rounded-3xl border ${item.bg} ${item.border} shadow-sm transition-all duration-300 flex flex-col h-full`}
             >
-              {/* Icon & Age Badge */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2 sm:mb-4">
                 <div className="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-800 shadow-sm inline-flex items-center justify-center w-fit">
                   {item.icon}
@@ -176,17 +105,14 @@ export default function AcademicPrograms() {
                 </span>
               </div>
 
-              {/* Title */}
               <h3 className="text-sm sm:text-xl font-bold text-slate-900 dark:text-white mb-1 sm:mb-2">
                 {item.title}
               </h3>
 
-              {/* Description */}
               <p className="text-slate-600 dark:text-slate-400 text-[11px] sm:text-sm leading-snug sm:leading-relaxed mb-3 sm:mb-6">
                 {item.description}
               </p>
 
-              {/* Link / Button */}
               <div className="mt-auto pt-2 sm:pt-4 border-t border-slate-200/40 dark:border-slate-800/60">
                 <Link
                   href="/academics"

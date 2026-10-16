@@ -1,93 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, Users, Award, Sparkles, CheckCircle2, Star, Sun, Sunset } from "lucide-react";
-
-// Featured Play Group Class
-const featuredProgram = {
-  id: 1,
-  title: "Play Group",
-  age: "Ages 4 - 5 Years",
-  description: "An interactive introduction to school life through sensory play, rhymes, social interaction, and basic motor skill development.",
-  features: ["Sensory & Motor Play", "Basic Speech & Rhymes", "Safe Socialization"],
-  icon: <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-600 dark:text-emerald-400" />,
-  color: "from-emerald-50 via-teal-50 to-emerald-100/50 dark:from-emerald-950/40 dark:via-slate-900 dark:to-teal-950/30 border-2 border-emerald-400/80 dark:border-emerald-500/50",
-};
-
-// Remaining 6 Classes
-const programs = [
-  {
-    id: 2,
-    title: "Nursery",
-    age: "Ages 5 - 6 Years",
-    description: "Focusing on early literacy, pre-math concepts, alphabet recognition, and creative expression through colors and crafts.",
-    features: ["Alphabet & Number Intro", "Art & Craft Sessions", "Interactive Storytelling"],
-    color: "from-amber-500/10 to-amber-500/5 border-amber-200 dark:border-amber-900/50",
-  },
-  {
-    id: 3,
-    title: "Class One",
-    age: "Ages 6 - 7 Years",
-    description: "Building confidence in reading, writing simple sentences, basic arithmetic, and encouraging curiosity through science exploration.",
-    features: ["Reading & Writing Basics", "Basic Math & Logic", "Science Discovery Labs"],
-    color: "from-sky-500/10 to-sky-500/5 border-sky-200 dark:border-sky-900/50",
-  },
-  {
-    id: 4,
-    title: "Class Two",
-    age: "Ages 7 - 8 Years",
-    description: "Expanding core academic subjects with creative thinking, vocabulary building, problem-solving, and team activities.",
-    features: ["Expanded Vocabulary", "Group Problem Solving", "Creative Writing"],
-    color: "from-rose-500/10 to-rose-500/5 border-rose-200 dark:border-rose-900/50",
-  },
-  {
-    id: 5,
-    title: "Class Three",
-    age: "Ages 8 - 9 Years",
-    description: "Introducing advanced mathematical operations, independent study habits, reading comprehension, and analytical thinking.",
-    features: ["Advanced Arithmetic", "Reading Comprehension", "Independent Study Skills"],
-    color: "from-indigo-500/10 to-indigo-500/5 border-indigo-200 dark:border-indigo-900/50",
-  },
-  {
-    id: 6,
-    title: "Class Four",
-    age: "Ages 9 - 10 Years",
-    description: "Strengthening core concepts in science, mathematics, and social studies while fostering leadership and collaboration.",
-    features: ["Science Projects", "Social Studies & Ethics", "Leadership & Teamwork"],
-    color: "from-teal-500/10 to-teal-500/5 border-teal-200 dark:border-teal-900/50",
-  },
-  {
-    id: 7,
-    title: "Class Five",
-    age: "Ages 10 - 11 Years",
-    description: "Comprehensive primary education preparation ensuring a seamless transition to middle school with academic excellence.",
-    features: ["Primary Graduation Prep", "Critical Thinking Labs", "Advanced Problem Solving"],
-    color: "from-purple-500/10 to-purple-500/5 border-purple-200 dark:border-purple-900/50",
-  },
-];
-
-const curriculumHighlights = [
-  {
-    title: "Play-Based & Structured Learning",
-    description: "We blend fun interactive learning with academic foundation so children grow naturally without pressure.",
-    icon: Sparkles,
-  },
-  {
-    title: "Experienced Educators",
-    description: "Caring, trained, and certified teachers who provide personalized attention and emotional safety.",
-    icon: Users,
-  },
-  {
-    title: "Moral & Ethical Values",
-    description: "Teaching kindness, respect, honesty, and discipline alongside academic success.",
-    icon: Award,
-  },
-  {
-    title: "Interactive Classrooms",
-    description: "Equipped with modern visual aids, storytelling corners, and engaging learning toolkits.",
-    icon: BookOpen,
-  },
-];
+import { CheckCircle2, Star, Sun, Sunset } from "lucide-react";
+import { programs, featuredProgram, curriculumHighlights } from "../components/ClassesInfo";
 
 export default function AcademicsPage() {
   return (
@@ -132,9 +47,8 @@ export default function AcademicsPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
           whileHover={{ y: -4 }}
-          className={`mb-6 sm:mb-8 p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${featuredProgram.color} shadow-lg relative overflow-hidden`}
+          className={`mb-6 sm:mb-8 p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-gradient-to-br ${featuredProgram.gradient} shadow-lg relative overflow-hidden`}
         >
-          {/* Mobile Star & Header */}
           <div className="flex items-center justify-between mb-3 md:hidden">
             <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-emerald-200/80 dark:bg-emerald-900/80 text-emerald-900 dark:text-emerald-200">
               {featuredProgram.age}
@@ -144,7 +58,6 @@ export default function AcademicsPage() {
             </div>
           </div>
 
-          {/* Desktop Star Icon Top Right */}
           <div className="hidden md:flex absolute top-6 right-6 p-2 rounded-full bg-emerald-600 text-white shadow-md">
             <Star className="w-4 h-4 fill-white" />
           </div>
@@ -169,7 +82,6 @@ export default function AcademicsPage() {
                 {featuredProgram.description}
               </p>
 
-              {/* Features List */}
               <div className="flex flex-wrap gap-2 sm:gap-3 pt-1">
                 {featuredProgram.features.map((feature, idx) => (
                   <div key={idx} className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 bg-white/80 dark:bg-slate-900/80 px-3 py-1 rounded-lg border border-emerald-200/60 dark:border-emerald-800/50">
@@ -182,7 +94,7 @@ export default function AcademicsPage() {
           </div>
         </motion.div>
 
-        {/* 6 Remaining Classes Grid (1 col on mobile, 2 cols on tablet/desktop) */}
+        {/* 6 Classes Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-stretch">
           {programs.map((prog, index) => (
             <motion.div
@@ -192,7 +104,7 @@ export default function AcademicsPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
               whileHover={{ y: -5 }}
-              className={`rounded-2xl sm:rounded-3xl p-5 sm:p-7 bg-gradient-to-br ${prog.color} border shadow-sm flex flex-col justify-between h-full`}
+              className={`rounded-2xl sm:rounded-3xl p-5 sm:p-7 bg-gradient-to-br ${prog.gradient} border shadow-sm flex flex-col justify-between h-full`}
             >
               <div>
                 <div className="flex items-center justify-between gap-2 mb-3">
@@ -262,7 +174,7 @@ export default function AcademicsPage() {
         </div>
       </section>
 
-      {/* 4. Shift Timings Section (Shift Info instead of fixed routine) */}
+      {/* 4. Shift Timings Section */}
       <section className="py-16 lg:py-24 max-w-4xl mx-auto px-6 sm:px-12">
         <div className="text-center mb-10">
           <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1 block">
@@ -277,7 +189,6 @@ export default function AcademicsPage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Morning Shift */}
           <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-amber-200/80 dark:border-slate-800 shadow-sm text-center flex flex-col items-center">
             <div className="p-3.5 rounded-2xl bg-amber-100 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 mb-3">
               <Sun className="w-7 h-7" />
@@ -288,7 +199,6 @@ export default function AcademicsPage() {
             </p>
           </div>
 
-          {/* Day Shift */}
           <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-sky-200/80 dark:border-slate-800 shadow-sm text-center flex flex-col items-center">
             <div className="p-3.5 rounded-2xl bg-sky-100 dark:bg-sky-950/50 text-sky-600 dark:text-sky-400 mb-3">
               <Sunset className="w-7 h-7" />
