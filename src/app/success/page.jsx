@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft, Trophy, GraduationCap, Quote } from "lucide-react";
+import { Trophy, GraduationCap, Quote } from "lucide-react";
 
 export default function AllSuccessStoriesPage() {
   const allStudents = [
@@ -170,40 +169,39 @@ export default function AllSuccessStoriesPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-white dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100 transition-colors duration-300">
 
-        {/* Back Button */}
-        <div className="mb-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:underline"
+      {/* 1. Hero Section (Unified Style) */}
+      <section className="relative py-16 lg:py-24 bg-amber-50/40 dark:bg-slate-900/50 border-b border-amber-200/60 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Home
-          </Link>
+            <span className="inline-block px-4 py-1.5 rounded-full bg-amber-100 dark:bg-slate-900 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-slate-800 text-xs sm:text-sm font-semibold mb-3 shadow-sm">
+              Complete Hall of Fame
+            </span>
+            <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
+              All Success <span className="text-emerald-600 dark:text-emerald-400">Stories</span>
+            </h1>
+            <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
+              Explore all brilliant students who made us proud through Cadet selections, scholarships, and top school achievements.
+            </p>
+          </motion.div>
         </div>
+      </section>
 
-        {/* Header Title */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-amber-100 dark:bg-slate-900 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-slate-800 text-xs sm:text-sm font-semibold mb-3 shadow-sm">
-            Complete Hall of Fame
-          </span>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
-            All Success <span className="text-emerald-600 dark:text-emerald-400">Stories</span>
-          </h1>
-          <p className="mt-3 text-sm sm:text-lg text-slate-600 dark:text-slate-400 font-medium">
-            Explore all brilliant students who made us proud through Cadet selections, scholarships, and top school achievements.
-          </p>
-        </div>
-
-        {/* Grid of 20 Students */}
+      {/* 2. Grid Section */}
+      <section className="py-12 lg:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {allStudents.map((student, index) => (
             <motion.div
               key={student.id}
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.05 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.3, delay: index * 0.04 }}
               className="bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden p-5 flex flex-col justify-between group hover:border-emerald-500/50 transition-all duration-300"
             >
               <div>
@@ -240,8 +238,8 @@ export default function AllSuccessStoriesPage() {
             </motion.div>
           ))}
         </div>
+      </section>
 
-      </div>
     </div>
   );
 }
