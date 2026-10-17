@@ -2,8 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft, Mail, Phone, Award, Users } from "lucide-react";
+import { Mail, Phone, Award, Users } from "lucide-react";
 
 export default function AllTeachersPage() {
   const allTeachers = [
@@ -193,22 +192,11 @@ export default function AllTeachersPage() {
   ];
 
   return (
-    <div className="min-h-screen py-12 sm:py-16 lg:py-24 bg-white dark:bg-slate-950 w-full relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-white dark:bg-slate-950 min-h-screen text-slate-800 dark:text-slate-100 transition-colors duration-300">
 
-        {/* Back to Home Button */}
-        <div className="mb-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 hover:bg-emerald-600 hover:text-white dark:hover:bg-emerald-600 dark:hover:text-white transition-all text-sm font-semibold"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Home</span>
-          </Link>
-        </div>
-
-        {/* Page Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+      {/* 1. Hero Section (Academics Page Style) */}
+      <section className="relative py-16 lg:py-24 bg-amber-50/40 dark:bg-slate-900/50 border-b border-amber-200/60 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-16 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -220,11 +208,15 @@ export default function AllTeachersPage() {
             <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
               Teachers & <span className="text-emerald-600 dark:text-emerald-400">Staff Directory</span>
             </h1>
-            <p className="mt-3 text-sm sm:text-lg text-slate-600 dark:text-slate-400 font-medium">
+            <p className="mt-4 text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
               Meet our respected faculty members and dedicated staff who keep our institution running smoothly every day.
             </p>
           </motion.div>
         </div>
+      </section>
+
+      {/* Main Content Sections */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
 
         {/* SECTION 1: Teachers */}
         <div className="mb-16 sm:mb-24">
@@ -235,7 +227,7 @@ export default function AllTeachersPage() {
             </h2>
           </div>
 
-          {/* Teachers Grid: 4 cols on large, 3 cols on medium, 2 cols on small */}
+          {/* Teachers Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {allTeachers.map((teacher, index) => (
               <motion.div
@@ -293,7 +285,7 @@ export default function AllTeachersPage() {
             </h2>
           </div>
 
-          {/* Staff Grid: 4 cols on large, 3 cols on medium, 2 cols on small */}
+          {/* Staff Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
             {allStaff.map((staff, index) => (
               <motion.div
