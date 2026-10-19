@@ -2,11 +2,24 @@
 
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+// Screen wise speed (px per second)
+const getSpeed = () => {
+  if (typeof window === "undefined") return 60;
+  const w = window.innerWidth;
+  if (w >= 1024) return 90;
+  if (w >= 640) return 70;
+  return 40;
+};
 
 export default function Marquee() {
   const [dynamicNotices, setDynamicNotices] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [timing, setTiming] = useState(null);
+
+  const containerRef = useRef(null);
+  const trackRef = useRef(null);
 
   useEffect(() => {
     const fetchLatestNotices = async () => {
@@ -41,6 +54,36 @@ export default function Marquee() {
     "Please check the notice board for regular updates",
   ];
 
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const calculate = () => {
+      if (!containerRef.current || !trackRef.current) return;
+      const speed = getSpeed();
+      const containerWidth = containerRef.current.offsetWidth;
+      const trackWidth = trackRef.current.offsetWidth;
+      setTiming({
+        intro: containerWidth / speed,
+        loop: trackWidth / 2 / speed,
+      });
+    };
+
+    calculate();
+    window.addEventListener("resize", calculate);
+    return () => window.removeEventListener("resize", calculate);
+  }, [isLoaded, dynamicNotices]);
+
+  const renderLoop = (prefix) => (
+    <div className="inline-flex items-center">
+      {notices.map((notice, idx) => (
+        <span key={`${prefix}-${idx}`} className="inline-flex items-center mr-8 sm:mr-16">
+          {notice}
+          <span className="ml-8 sm:ml-16 text-amber-400 font-normal">•</span>
+        </span>
+      ))}
+    </div>
+  );
+
   return (
     <section className="w-full bg-white dark:bg-slate-950 py-3 px-3 sm:px-8 border-b border-slate-200/60 dark:border-slate-800 shadow-sm relative overflow-hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-6">
@@ -63,33 +106,33 @@ export default function Marquee() {
           </div>
 
           {/* Marquee Ticker Effect */}
-          <div className="relative overflow-hidden w-full whitespace-nowrap">
-            <div className={`inline-block text-xs sm:text-base font-bold text-amber-600 dark:text-amber-500 tracking-wide ${isLoaded ? "animate-marquee" : ""}`}>
-
-              {/* Primary Loop */}
-              <div className="inline-flex items-center">
-                {notices.map((notice, idx) => (
-                  <span key={idx} className="inline-flex items-center mr-8 sm:mr-16">
-                    {notice}
-                    {idx < notices.length - 1 && (
-                      <span className="ml-8 sm:ml-16 text-amber-400 font-normal">•</span>
-                    )}
-                  </span>
-                ))}
+          <div
+            ref={containerRef}
+            className="marquee-wrap relative overflow-hidden w-full whitespace-nowrap"
+          >
+            {/* Outer */}
+            <div
+              className="marquee-anim"
+              style={{
+                visibility: timing ? "visible" : "hidden",
+                animation: timing
+                  ? `marquee-intro ${timing.intro}s linear both`
+                  : "none",
+              }}
+            >
+              {/* Inner */}
+              <div
+                ref={trackRef}
+                className="marquee-anim inline-block text-xs sm:text-base font-bold text-amber-600 dark:text-amber-500 tracking-wide"
+                style={{
+                  animation: timing
+                    ? `marquee-loop ${timing.loop}s linear ${timing.intro}s infinite`
+                    : "none",
+                }}
+              >
+                {renderLoop("a")}
+                {renderLoop("b")}
               </div>
-
-              {/* Duplicate Loop for Seamless Infinite Scroll */}
-              <div className="inline-flex items-center ml-8 sm:ml-16">
-                {notices.map((notice, idx) => (
-                  <span key={`dup-${idx}`} className="inline-flex items-center mr-8 sm:mr-16">
-                    {notice}
-                    {idx < notices.length - 1 && (
-                      <span className="ml-8 sm:ml-16 text-amber-400 font-normal">•</span>
-                    )}
-                  </span>
-                ))}
-              </div>
-
             </div>
           </div>
         </div>
@@ -106,18 +149,17 @@ export default function Marquee() {
 
       </div>
 
-      {/* Tailwind Custom Marquee Animation Style */}
       <style jsx global>{`
-        @keyframes marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
+        @keyframes marquee-intro {
+          from { transform: translateX(100%); }
+          to   { transform: translateX(0); }
         }
-        .animate-marquee {
-          display: inline-block;
-          animation: marquee 50s linear infinite;
+        @keyframes marquee-loop {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
         }
-        .animate-marquee:hover {
-          animation-play-state: paused;
+        .marquee-wrap:hover .marquee-anim {
+          animation-play-state: paused !important;
         }
       `}</style>
     </section>
