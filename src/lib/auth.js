@@ -40,6 +40,16 @@ export const auth = betterAuth({
         defaultValue: "guardian",
         required: false,
       },
+      status: {
+        type: "string",
+        defaultValue: "pending",
+        required: false,
+      },
+      userId: {
+        type: "string",
+        defaultValue: null,
+        required: false,
+      },
       studentInfo: {
         type: "string",
         defaultValue: null,

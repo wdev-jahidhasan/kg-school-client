@@ -80,15 +80,17 @@ export default function SignupPage() {
         password,
         name,
         image: imageUrl || "",
+        role: "guardian",
+        status: "pending",
+        userId: null,
+        studentInfo: null,
       },
       {
         onSuccess: () => {
           setLoading(false);
           toast.success("Account created successfully!");
 
-          //delay
           setTimeout(() => {
-            setLoading(false);
             router.push("/");
           }, 1500);
         },
@@ -100,6 +102,7 @@ export default function SignupPage() {
       }
     );
   };
+
 
   const handleGoogleLogin = async () => {
     try {
