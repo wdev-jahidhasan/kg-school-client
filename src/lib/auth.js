@@ -50,9 +50,8 @@ export const auth = betterAuth({
         defaultValue: null,
         required: false,
       },
-      studentInfo: {
-        type: "string",
-        defaultValue: null,
+      profile: {
+        type: "json",
         required: false,
       },
     },

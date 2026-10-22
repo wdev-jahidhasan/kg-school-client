@@ -83,7 +83,7 @@ export default function SignupPage() {
         role: "guardian",
         status: "pending",
         userId: null,
-        studentInfo: null,
+        profile: null,
       },
       {
         onSuccess: () => {
