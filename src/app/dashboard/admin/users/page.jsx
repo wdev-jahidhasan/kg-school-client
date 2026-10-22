@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Users, Loader2, AlertCircle, Search, Eye, Filter, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
+import { Users, Loader2, AlertCircle, Search, Filter, Eye, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
 import UserDetailsModal from "@/app/components/dashboardComps/UserDetailsModal";
 
 export default function AdminManageUsersPage() {
@@ -90,10 +90,10 @@ export default function AdminManageUsersPage() {
 
   // Open Confirmation Modal for Status Change
   const triggerStatusChange = (userId, newStatus) => {
-    const actionLabel = newStatus === "verified" ? "Verify" : "Disable";
+    const actionLabel = newStatus === "verified" ? "Verified" : "Disabled";
     setConfirmModal({
       isOpen: true,
-      title: `Confirm User ${actionLabel}`,
+      title: `Confirm User Status Update`,
       message: `Are you sure you want to change this user's status to "${actionLabel}"?`,
       type: "status",
       userId,
@@ -283,12 +283,12 @@ export default function AdminManageUsersPage() {
                             {user.name || "N/A"}
                           </td>
 
-                          {/* Email Column (Without Icon) */}
+                          {/* Email Column */}
                           <td className="px-5 py-4 text-slate-500 dark:text-slate-400 text-center">
                             <span>{user.email || "N/A"}</span>
                           </td>
 
-                          {/* Role Column (Interactive Dropdown for non-admins) */}
+                          {/* Role Column */}
                           <td className="px-5 py-4 text-center">
                             {isAdmin ? (
                               <span className={`inline-block px-3 py-1 rounded-md text-xs font-semibold capitalize ${getRoleBadgeColor(user.role)}`}>
@@ -322,8 +322,8 @@ export default function AdminManageUsersPage() {
                                 }`}
                             >
                               <option value="pending">Pending</option>
-                              <option value="verified">Verify</option>
-                              <option value="disabled">Disable</option>
+                              <option value="verified">Verified</option>
+                              <option value="disabled">Disabled</option>
                             </select>
                           </td>
 
