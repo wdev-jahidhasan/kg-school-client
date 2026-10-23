@@ -46,11 +46,12 @@ export default function ProfileDetailsPage() {
   const userStatus = user.status || (user.isApproved ? "Verified" : "Pending");
 
   const getIdLabel = () => {
-    if (role === "guardian") return "Student / Guardian ID";
-    if (role === "teacher" || role === "instructor") return "Teacher ID";
+    if (role === "teacher") return "Teacher ID";
     if (role === "staff") return "Staff ID";
     return "System ID";
   };
+
+  const userPhone = profile.phone || user.phone;
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-amber-50/60 via-white to-emerald-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-16 sm:py-20 px-4 sm:px-6 lg:px-8 flex justify-center">
@@ -91,15 +92,22 @@ export default function ProfileDetailsPage() {
           <div className="space-y-2 text-center sm:text-left flex-1">
             <div>
               <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">{user.name}</h2>
+              {/* Gmail Address */}
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-start gap-1.5 mt-0.5">
                 <Mail className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> {user.email}
               </p>
+              {/* Phone Number right below Gmail */}
+              {userPhone && (
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-start gap-1.5 mt-1">
+                  <Phone className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> {userPhone}
+                </p>
+              )}
             </div>
 
             {/* Role & Status Badges */}
-            <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+            <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap pt-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/50 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider">
-                <Shield className="w-3.5 h-3.5" /> Role: {user.role || "User"}
+                <Shield className="w-3.5 h-3.5" /> {user.role || "User"}
               </div>
 
               <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusApproved
@@ -109,54 +117,36 @@ export default function ProfileDetailsPage() {
                   : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200/50 dark:border-amber-800"
                 }`}>
                 {statusApproved ? <CheckCircle2 className="w-3.5 h-3.5" /> : user.status === "disabled" ? <Ban className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
-                Status: {userStatus}
+                {userStatus}
               </span>
             </div>
           </div>
         </div>
 
-        {/* Lucrative & Blinking ID Badge Box */}
-        <div className="relative overflow-hidden mt-5 p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-cyan-950/40 border border-emerald-500/30 dark:border-emerald-500/20 flex items-center justify-between shadow-xs">
-          <div className="flex items-center gap-2.5 z-10">
-            <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-              <Hash className="w-4 h-4" />
-            </div>
-            <p className="text-xs uppercase font-extrabold tracking-wider text-slate-700 dark:text-slate-300">
-              {getIdLabel()}
-            </p>
-          </div>
-
-          <span className={`z-10 font-mono text-xs sm:text-sm px-3.5 py-1.5 rounded-lg border tracking-wider font-extrabold ${uniqueId !== "Not Assigned Yet"
-            ? "text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 shadow-md shadow-emerald-500/30 animate-sharp-blink"
-            : "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-400/60 animate-sharp-blink italic"
-            }`}>
-            {uniqueId}
-          </span>
-        </div>
-
-        {/* Guardian Phone View */}
-        {role === "guardian" && (
-          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
-              <Phone className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
-              <div className="text-xs">
-                <p className="text-slate-400">Guardian's Phone</p>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.phone || "N/A"}</p>
+        {/* Non-Guardian ID Badge Box (Teacher / Staff / System) */}
+        {role !== "guardian" && (
+          <div className="relative overflow-hidden mt-5 p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-cyan-950/40 border border-emerald-500/30 dark:border-emerald-500/20 flex items-center justify-between shadow-xs">
+            <div className="flex items-center gap-2.5 z-10">
+              <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                <Hash className="w-4 h-4" />
               </div>
+              <p className="text-xs uppercase font-extrabold tracking-wider text-slate-700 dark:text-slate-300">
+                {getIdLabel()}
+              </p>
             </div>
+
+            <span className={`z-10 font-mono text-xs sm:text-sm px-3.5 py-1.5 rounded-lg border tracking-wider font-extrabold ${uniqueId !== "Not Assigned Yet"
+              ? "text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 shadow-md shadow-emerald-500/30 animate-sharp-blink"
+              : "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-400/60 animate-sharp-blink italic"
+              }`}>
+              {uniqueId}
+            </span>
           </div>
         )}
 
-        {/* Staff & Teacher Phone & Blood Group View */}
+        {/* Staff & Teacher Blood Group View */}
         {(role === "staff" || role === "teacher" || role === "instructor") && (
-          <div className="grid grid-cols-2 gap-3 mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
-              <Phone className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
-              <div className="text-xs">
-                <p className="text-slate-400">Phone</p>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.phone || "N/A"}</p>
-              </div>
-            </div>
+          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
             <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
               <Droplet className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
               <div className="text-xs">
@@ -167,7 +157,7 @@ export default function ProfileDetailsPage() {
           </div>
         )}
 
-        {/* Guardian Extra Info View (Responsive 2x2 Grid Layout) */}
+        {/* Guardian Extra Info View */}
         {role === "guardian" && (
           <div className="mt-6 pt-5 border-t border-slate-200/80 dark:border-slate-800/80">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5 flex items-center gap-2">
@@ -176,7 +166,7 @@ export default function ProfileDetailsPage() {
             </h3>
 
             {/* Student Profile Card */}
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-950/60 dark:to-emerald-950/20 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-emerald-500/30 transition-all">
+            <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-950/60 dark:to-emerald-950/20 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-emerald-500/30 transition-all space-y-4">
 
               {/* Top Part: Image & Name */}
               <div className="flex items-center gap-4 pb-4 border-b border-slate-200/60 dark:border-slate-800/80">
@@ -197,8 +187,21 @@ export default function ProfileDetailsPage() {
                 </div>
               </div>
 
+              {/* Student ID Badge on the next line below Image & Name */}
+              <div className="flex items-center justify-between bg-white/80 dark:bg-slate-900/80 px-3.5 py-2.5 rounded-xl border border-emerald-500/30 shadow-2xs">
+                <span className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                  <Hash className="w-4 h-4 text-emerald-600" /> Student ID:
+                </span>
+                <span className={`font-mono text-xs sm:text-sm px-3 py-1 rounded-md border tracking-wider font-extrabold ${uniqueId !== "Not Assigned Yet"
+                  ? "text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 shadow-xs animate-sharp-blink"
+                  : "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-400/60 animate-sharp-blink italic text-xs"
+                  }`}>
+                  {uniqueId}
+                </span>
+              </div>
+
               {/* Bottom Part: Exact 2x2 Grid */}
-              <div className="grid grid-cols-2 gap-3 pt-4">
+              <div className="grid grid-cols-2 gap-3 pt-2">
 
                 <div className="flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
