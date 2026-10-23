@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { X, User, Mail, CheckCircle2, Clock, Ban } from "lucide-react";
+import { X, User, Mail, CheckCircle2, Clock, Ban, Hash } from "lucide-react";
 import GuardianView from "./AdminManageUsersDetails/GuardianView";
 import StaffTeacherView from "./AdminManageUsersDetails/StaffTeacherView";
 import ActivityLogView from "./AdminManageUsersDetails/ActivityLogView";
@@ -12,14 +12,40 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
   const role = user?.role?.toLowerCase().trim();
   const profile = user?.profile || {};
 
+  const uniqueId = user?.userId && user.userId.trim() !== "" ? user.userId : "Not Assigned Yet";
+
   const statusApproved = user.status === "approved" || user.status === "verified" || user.isApproved === true || user.status === "Approved";
   const userActivities = user.activities || user.activityLog || [];
+
+  const getIdLabel = () => {
+    if (role === "guardian") return "Student ID";
+    if (role === "teacher") return "Teacher ID";
+    if (role === "staff") return "Staff ID";
+    return "System ID";
+  };
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={onClose}
     >
+      {/* Custom Blinking Keyframes CSS */}
+      <style jsx global>{`
+        @keyframes sharpBlink {
+          0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.75;
+            transform: scale(0.97);
+          }
+        }
+        .animate-sharp-blink {
+          animation: sharpBlink 3s infinite ease-in-out;
+        }
+      `}</style>
+
       <div
         className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transition-all transform max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
@@ -42,15 +68,15 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
         <div className="p-6 space-y-5 text-xs sm:text-sm overflow-y-auto">
           {/* User Header Summary */}
           <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-            <div className="w-12 h-12 rounded-full border-2 border-emerald-500/40 bg-emerald-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-lg shrink-0 overflow-hidden">
+            <div className="w-12 h-12 rounded-full border-2 border-emerald-500/40 bg-emerald-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-lg shrink-0 overflow-hidden shadow-sm">
               {user.image ? (
                 <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
               ) : (
                 <span>{user.name ? user.name.charAt(0).toUpperCase() : "U"}</span>
               )}
             </div>
-            <div className="space-y-1">
-              <h4 className="font-extrabold text-base text-slate-900 dark:text-white leading-tight">
+            <div className="space-y-1 flex-1 overflow-hidden">
+              <h4 className="font-extrabold text-base text-slate-900 dark:text-white leading-tight truncate">
                 {user.name || "N/A"}
               </h4>
               <div className="flex items-center gap-2 flex-wrap">
@@ -58,16 +84,36 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
                   {user.role || "User"}
                 </span>
                 <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold ${statusApproved
-                    ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
-                    : user.status === "disabled"
-                      ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
-                      : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
+                  ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
+                  : user.status === "disabled"
+                    ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
+                    : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
                   }`}>
                   {statusApproved ? <CheckCircle2 className="w-3 h-3" /> : user.status === "disabled" ? <Ban className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                   {user.status || (user.isApproved ? "Verified" : "Pending")}
                 </span>
               </div>
             </div>
+          </div>
+
+          {/* Always Blinking ID Badge Box */}
+          <div className="relative overflow-hidden p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-cyan-950/40 border border-emerald-500/30 dark:border-emerald-500/20 flex items-center justify-between shadow-xs">
+            <div className="flex items-center gap-2.5 z-10">
+              <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                <Hash className="w-4 h-4 animate-spin-slow" />
+              </div>
+              <p className="text-xs uppercase font-extrabold tracking-wider text-slate-700 dark:text-slate-300">
+                {getIdLabel()}
+              </p>
+            </div>
+
+            {/* Continuous Sharp Blinking Badge */}
+            <span className={`z-10 font-mono text-xs sm:text-sm px-3.5 py-1.5 rounded-lg border tracking-wider font-extrabold ${uniqueId !== "Not Assigned Yet"
+              ? "text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 shadow-md shadow-emerald-500/30 animate-sharp-blink"
+              : "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-400/60 animate-sharp-blink italic"
+              }`}>
+              {uniqueId}
+            </span>
           </div>
 
           {/* Non-Guardian Email Box */}
