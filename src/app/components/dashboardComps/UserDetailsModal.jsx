@@ -1,16 +1,25 @@
 "use client";
 
 import React from "react";
-import { X, User, Mail, Shield, CheckCircle2, Clock, Calendar, Phone, Droplet, Activity } from "lucide-react";
+import {
+  X, User, Mail, Shield, CheckCircle2, Clock,
+  Phone, Droplet, Activity, BookOpen, Layers, Hash, Briefcase, Ban
+} from "lucide-react";
 
 export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeColor }) {
   if (!isOpen || !user) return null;
 
-  const statusApproved = user.status === "approved" || user.isApproved === true || user.status === "Approved";
+  const role = user?.role?.toLowerCase().trim();
+  const profile = user?.profile || {};
+
+  const statusApproved = user.status === "approved" || user.status === "verified" || user.isApproved === true || user.status === "Approved";
   const userActivities = user.activities || user.activityLog || [];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={onClose}
+    >
       <div
         className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transition-all transform max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
@@ -34,31 +43,36 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
 
           {/* User Header Summary */}
           <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-            <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-lg shrink-0">
-              {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+            <div className="w-12 h-12 rounded-full border-2 border-emerald-500/40 bg-emerald-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-lg shrink-0 overflow-hidden">
+              {user.image ? (
+                <img src={user.image} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                <span>{user.name ? user.name.charAt(0).toUpperCase() : "U"}</span>
+              )}
             </div>
             <div className="space-y-1">
               <h4 className="font-extrabold text-base text-slate-900 dark:text-white leading-tight">
                 {user.name || "N/A"}
               </h4>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold capitalize ${getRoleBadgeColor(user.role)}`}>
+                <span className={`px-2.5 py-0.5 rounded-md text-[11px] font-semibold capitalize ${getRoleBadgeColor ? getRoleBadgeColor(user.role) : "bg-slate-100 text-slate-700"}`}>
                   {user.role || "User"}
                 </span>
                 <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold ${statusApproved
                   ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
-                  : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
+                  : user.status === "disabled"
+                    ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
+                    : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
                   }`}>
-                  {statusApproved ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
-                  {user.status || (user.isApproved ? "Approved" : "Pending")}
+                  {statusApproved ? <CheckCircle2 className="w-3 h-3" /> : user.status === "disabled" ? <Ban className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
+                  {user.status || (user.isApproved ? "Verified" : "Pending")}
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Key-Value Details List */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
+          {/* Non-Guardian Email Box */}
+          {role !== "guardian" && (
             <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
               <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
                 <Mail className="w-3.5 h-3.5 text-slate-400" /> Email Address
@@ -67,55 +81,173 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
                 {user.email || "N/A"}
               </p>
             </div>
+          )}
 
-            <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-              <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                <Phone className="w-3.5 h-3.5 text-slate-400" /> Phone Number
-              </span>
-              <p className="font-semibold text-slate-800 dark:text-slate-200">
-                {user.phone || user.mobile || "N/A"}
-              </p>
-            </div>
+          {/* Dynamic Role-Based Extra Details Section */}
 
-            {/* Blood Group Field */}
-            <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-              <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                <Droplet className="w-3.5 h-3.5 text-rose-500" /> Blood Group
-              </span>
-              <p className="font-bold text-rose-600 dark:text-rose-400 uppercase">
-                {user.bloodGroup || user.blood_group || "N/A"}
-              </p>
-            </div>
+          {/* 1. GUARDIAN ROLE DETAILS */}
+          {role === "guardian" && (
+            <div className="space-y-3 pt-1">
 
-            <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-              <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                <Calendar className="w-3.5 h-3.5 text-slate-400" /> Joined Date
-              </span>
-              <p className="font-semibold text-slate-800 dark:text-slate-200">
-                {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "N/A"}
-              </p>
-            </div>
+              {/* Email & Guardian's Phone Together in One Box */}
+              <div className="p-3.5 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Email */}
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 rounded-lg bg-emerald-100/60 dark:bg-emerald-950/60 text-emerald-600 shrink-0">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <p className="text-[10px] uppercase font-medium text-slate-400">Email Address</p>
+                    <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{user.email || "N/A"}</p>
+                  </div>
+                </div>
 
-            {/* Role Specific Dynamic Info */}
-            {user.role?.toLowerCase() === "teacher" && (
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60 sm:col-span-2">
-                <span className="text-slate-400 text-[11px] font-medium mb-1 block">Subject / Department</span>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">
-                  {user.subject || user.department || "General Teacher"}
-                </p>
+                {/* Phone */}
+                <div className="flex items-center gap-2.5 sm:border-l sm:border-slate-200/60 sm:dark:border-slate-800 sm:pl-3">
+                  <div className="p-2 rounded-lg bg-emerald-100/60 dark:bg-emerald-950/60 text-emerald-600 shrink-0">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <p className="text-[10px] uppercase font-medium text-slate-400">Guardian's Phone</p>
+                    <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{profile.phone || user.phone || "N/A"}</p>
+                  </div>
+                </div>
               </div>
-            )}
 
-            {user.role?.toLowerCase() === "guardian" && (
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60 sm:col-span-2">
-                <span className="text-slate-400 text-[11px] font-medium mb-1 block">Connected Students / Ward</span>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">
-                  {user.studentName || user.ward || "No student linked"}
-                </p>
+              {/* Linked Student Information Card (2x2 Clean Grid) */}
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-950/60 dark:to-emerald-950/20 border border-slate-200/80 dark:border-slate-800 space-y-3">
+
+                {/* Student Top Header */}
+                <div className="flex items-center gap-3 pb-3 border-b border-slate-200/60 dark:border-slate-800">
+                  <div className="w-12 h-12 rounded-full border border-emerald-500/30 bg-white dark:bg-slate-800 overflow-hidden flex items-center justify-center shrink-0">
+                    {profile.studentImage ? (
+                      <img src={profile.studentImage} alt="Student" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-6 h-6 text-slate-400" />
+                    )}
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
+                      {profile.studentName || "Not Assigned"}
+                    </h5>
+                    <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-100/60 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md inline-block mt-0.5">
+                      Linked Student Profile
+                    </span>
+                  </div>
+                </div>
+
+                {/* Student 2x2 Grid Layout */}
+                <div className="grid grid-cols-2 gap-2.5">
+                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800">
+                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
+                      <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Class</span>
+                    </div>
+                    <p className="text-xs font-bold text-slate-900 dark:text-slate-100 pl-5">{profile.studentClass || "N/A"}</p>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800">
+                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
+                      <Layers className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Section</span>
+                    </div>
+                    <p className="text-xs font-bold text-slate-900 dark:text-slate-100 pl-5">{profile.studentSection || "N/A"}</p>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800">
+                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
+                      <Hash className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Roll No</span>
+                    </div>
+                    <p className="text-xs font-bold text-slate-900 dark:text-slate-100 pl-5">{profile.studentRoll || "N/A"}</p>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800">
+                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
+                      <Droplet className="w-3.5 h-3.5 text-rose-500" />
+                      <span>Blood Group</span>
+                    </div>
+                    <p className="text-xs font-bold text-rose-600 dark:text-rose-400 pl-5">{profile.studentBloodGroup || "N/A"}</p>
+                  </div>
+                </div>
+
               </div>
-            )}
 
-          </div>
+            </div>
+          )}
+
+          {/* 2. STAFF ROLE DETAILS */}
+          {role === "staff" && (
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
+                  <Phone className="w-3.5 h-3.5 text-emerald-600" /> Phone Number
+                </span>
+                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.phone || user.phone || "N/A"}</p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
+                  <Droplet className="w-3.5 h-3.5 text-rose-500" /> Blood Group
+                </span>
+                <p className="font-bold text-rose-600 dark:text-rose-400 uppercase">{profile.bloodGroup || "N/A"}</p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
+                  <Briefcase className="w-3.5 h-3.5 text-emerald-600" /> Department
+                </span>
+                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.department || "N/A"}</p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
+                  <Clock className="w-3.5 h-3.5 text-emerald-600" /> Joining Date
+                </span>
+                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p>
+              </div>
+            </div>
+          )}
+
+          {/* 3. TEACHER ROLE DETAILS */}
+          {(role === "teacher" || role === "instructor") && (
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
+                  <Phone className="w-3.5 h-3.5 text-emerald-600" /> Phone Number
+                </span>
+                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.phone || user.phone || "N/A"}</p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
+                  <Droplet className="w-3.5 h-3.5 text-rose-500" /> Blood Group
+                </span>
+                <p className="font-bold text-rose-600 dark:text-rose-400 uppercase">{profile.bloodGroup || "N/A"}</p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
+                  <BookOpen className="w-3.5 h-3.5 text-emerald-600" /> Subject
+                </span>
+                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.subject || "N/A"}</p>
+              </div>
+
+              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
+                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
+                  <Clock className="w-3.5 h-3.5 text-emerald-600" /> Joining Date
+                </span>
+                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p>
+              </div>
+            </div>
+          )}
+
+          {/* 4. ADMIN ROLE DETAILS */}
+          {role === "admin" && (
+            <div className="p-4 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60 text-center text-xs text-slate-500 dark:text-slate-400">
+              System Administrator profile requires no extra details.
+            </div>
+          )}
 
           {/* Activity Panel */}
           <div className="space-y-3 pt-2">
@@ -148,7 +280,6 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
                 ))}
               </div>
             ) : (
-              /* Empty Activity State UI */
               <div className="p-6 rounded-xl bg-slate-50/50 dark:bg-slate-800/20 border border-dashed border-slate-200 dark:border-slate-800 text-center space-y-1">
                 <Activity className="w-6 h-6 text-slate-300 dark:text-slate-600 mx-auto" />
                 <p className="text-slate-500 dark:text-slate-400 font-medium text-xs">
