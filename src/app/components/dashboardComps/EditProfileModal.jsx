@@ -9,15 +9,27 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
   const [name, setName] = useState(user?.name || "");
   const [imageUrl, setImageUrl] = useState(user?.image || "");
 
-  const [studentName, setStudentName] = useState(user?.studentInfo?.studentName || "");
-  const [studentImageUrl, setStudentImageUrl] = useState(user?.studentInfo?.studentImage || "");
-  const [studentClass, setStudentClass] = useState(user?.studentInfo?.studentClass || "");
-  const [studentSection, setStudentSection] = useState(user?.studentInfo?.studentSection || "");
-  const [studentRoll, setStudentRoll] = useState(user?.studentInfo?.studentRoll || "");
+  // Common Additional Fields
+  const [phone, setPhone] = useState(user?.profile?.phone || "");
+  const [bloodGroup, setBloodGroup] = useState(user?.profile?.bloodGroup || "");
+
+  // Guardian Specific Fields
+  const [studentName, setStudentName] = useState(user?.profile?.studentName || "");
+  const [studentImageUrl, setStudentImageUrl] = useState(user?.profile?.studentImage || "");
+  const [studentClass, setStudentClass] = useState(user?.profile?.studentClass || "");
+  const [studentSection, setStudentSection] = useState(user?.profile?.studentSection || "");
+  const [studentRoll, setStudentRoll] = useState(user?.profile?.studentRoll || "");
+
+  // Staff & Teacher Specific Fields
+  const [department, setDepartment] = useState(user?.profile?.department || "");
+  const [subject, setSubject] = useState(user?.profile?.subject || "");
+  const [joiningDate, setJoiningDate] = useState(user?.profile?.joiningDate || "");
 
   const [uploading, setUploading] = useState(false);
   const [studentUploading, setStudentUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  const role = user?.role?.toLowerCase().trim();
 
   // ImgBB Upload Handler for User Picture
   const handleImageUpload = async (e) => {
@@ -77,16 +89,39 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
 
     setSaving(true);
 
-    const fullProfilePayload = {
-      name: name,
-      image: imageUrl,
-      studentInfo: user?.role === "guardian" ? {
+    // Constructing role-based profile payload
+    let profilePayload = {};
+
+    if (role === "guardian") {
+      profilePayload = {
+        phone,
+        bloodGroup,
         studentName,
         studentImage: studentImageUrl,
         studentClass,
         studentSection,
         studentRoll,
-      } : undefined,
+      };
+    } else if (role === "staff") {
+      profilePayload = {
+        phone,
+        bloodGroup,
+        department,
+        joiningDate,
+      };
+    } else if (role === "teacher" || role === "instructor") {
+      profilePayload = {
+        phone,
+        bloodGroup,
+        subject,
+        joiningDate,
+      };
+    }
+
+    const fullProfilePayload = {
+      name: name,
+      image: imageUrl,
+      profile: profilePayload,
     };
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
@@ -190,14 +225,53 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                 />
               </div>
 
+              {/* Common Fields for Guardian, Staff, Teacher */}
+              {role !== "admin" && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Phone Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="017xxxxxxxx"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                      Blood Group <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      required
+                      value={bloodGroup}
+                      onChange={(e) => setBloodGroup(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
+                    >
+                      <option value="" disabled>Select Group</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+
               {/* Guardian Specific Options */}
-              {user?.role === "guardian" && (
+              {role === "guardian" && (
                 <div className="space-y-4 pt-3 border-t border-slate-100 dark:border-slate-800">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                     Student Details
                   </h4>
 
-                  {/* Student Name */}
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                       Student Name <span className="text-red-500">*</span>
@@ -211,9 +285,7 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                     />
                   </div>
 
-                  {/* Class & Roll Grid */}
                   <div className="grid grid-cols-2 gap-3">
-                    {/* Class Dropdown */}
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                         Class <span className="text-red-500">*</span>
@@ -235,7 +307,6 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                       </select>
                     </div>
 
-                    {/* Roll Dropdown */}
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                         Roll <span className="text-red-500">*</span>
@@ -259,7 +330,6 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                     </div>
                   </div>
 
-                  {/* Section Dropdown */}
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                       Section <span className="text-red-500">*</span>
@@ -276,7 +346,6 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                     </select>
                   </div>
 
-                  {/* Student Picture Upload */}
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
                       Student Picture <span className="text-red-500">*</span>
@@ -296,7 +365,7 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                             <Loader2 className="h-4 w-4 animate-spin" />
                             <span>Uploading...</span>
                           </div>
-                        ) : studentImageUrl && studentImageUrl !== user?.studentInfo?.studentImage ? (
+                        ) : studentImageUrl && studentImageUrl !== user?.profile?.studentImage ? (
                           <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-500 font-semibold py-1">
                             <CheckCircle2 className="h-4 w-4" />
                             <span>Uploaded</span>
@@ -314,6 +383,78 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                           className="hidden"
                         />
                       </label>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Staff Specific Options */}
+              {role === "staff" && (
+                <div className="space-y-4 pt-3 border-t border-slate-100 dark:border-slate-800">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                    Staff Details
+                  </h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                        Department <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Admin / Accounts"
+                        value={department}
+                        onChange={(e) => setDepartment(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                        Joining Date <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={joiningDate}
+                        onChange={(e) => setJoiningDate(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Teacher Specific Options */}
+              {(role === "teacher" || role === "instructor") && (
+                <div className="space-y-4 pt-3 border-t border-slate-100 dark:border-slate-800">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                    Teacher Details
+                  </h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                        Subject <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Mathematics"
+                        value={subject}
+                        onChange={(e) => setSubject(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">
+                        Joining Date <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="date"
+                        required
+                        value={joiningDate}
+                        onChange={(e) => setJoiningDate(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all"
+                      />
                     </div>
                   </div>
                 </div>

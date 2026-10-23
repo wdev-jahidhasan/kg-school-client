@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { User, Mail, Shield, Edit3, Loader2, BookOpen, Layers, Hash } from "lucide-react";
+import { User, Mail, Shield, Edit3, Loader2, BookOpen, Layers, Hash, Phone, Droplet, Briefcase, Calendar } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 import EditProfileModal from "../components/dashboardComps/EditProfileModal";
-
 
 export default function ProfileDetailsPage() {
   const { data: session, isPending } = useSession();
@@ -46,6 +45,9 @@ export default function ProfileDetailsPage() {
       </div>
     );
   }
+
+  const role = user?.role?.toLowerCase().trim();
+  const profile = user?.profile || {};
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-amber-50/60 via-white to-emerald-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-16 sm:py-20 px-4 sm:px-6 lg:px-8 flex justify-center">
@@ -100,39 +102,109 @@ export default function ProfileDetailsPage() {
           </div>
         </div>
 
+        {/* Common Phone & Blood Group View (For Guardian, Staff, Teacher) */}
+        {role !== "admin" && (
+          <div className="grid grid-cols-2 gap-3 mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+              <Phone className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
+              <div className="text-xs">
+                <p className="text-slate-400">Phone</p>
+                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.phone || "N/A"}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+              <Droplet className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
+              <div className="text-xs">
+                <p className="text-slate-400">Blood Group</p>
+                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.bloodGroup || "N/A"}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Guardian Extra Info View */}
-        {user.role === "guardian" && (
-          <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800">
+        {role === "guardian" && (
+          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
             <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
               Linked Student Information
             </h3>
             <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800">
               <div className="w-14 h-14 rounded-full border border-emerald-500/30 bg-slate-200 dark:bg-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0">
-                {user.studentInfo?.studentImage ? (
-                  <img src={user.studentInfo.studentImage} alt="Student" className="w-full h-full object-cover" />
+                {profile.studentImage ? (
+                  <img src={profile.studentImage} alt="Student" className="w-full h-full object-cover" />
                 ) : (
                   <User className="w-6 h-6 text-slate-400" />
                 )}
               </div>
               <div className="flex-1 space-y-2">
                 <div>
-                  <p className="text-sm font-bold text-slate-900 dark:text-white">{user.studentInfo?.studentName || "Not Assigned"}</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">{profile.studentName || "Not Assigned"}</p>
                   <p className="text-xs text-slate-500 dark:text-slate-400">Student Profile</p>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 pt-1 border-t border-slate-200/60 dark:border-slate-800">
                   <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
                     <BookOpen className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
-                    <span>Class: <strong className="font-semibold">{user.studentInfo?.studentClass || "N/A"}</strong></span>
+                    <span>Class: <strong className="font-semibold">{profile.studentClass || "N/A"}</strong></span>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
                     <Layers className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
-                    <span>Sec: <strong className="font-semibold">{user.studentInfo?.studentSection || "N/A"}</strong></span>
+                    <span>Sec: <strong className="font-semibold">{profile.studentSection || "N/A"}</strong></span>
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300">
                     <Hash className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
-                    <span>Roll: <strong className="font-semibold">{user.studentInfo?.studentRoll || "N/A"}</strong></span>
+                    <span>Roll: <strong className="font-semibold">{profile.studentRoll || "N/A"}</strong></span>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Staff Extra Info View */}
+        {role === "staff" && (
+          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
+              Staff Information
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+                <Briefcase className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
+                <div className="text-xs">
+                  <p className="text-slate-400">Department</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.department || "N/A"}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+                <Calendar className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
+                <div className="text-xs">
+                  <p className="text-slate-400">Joining Date</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Teacher Extra Info View */}
+        {(role === "teacher" || role === "instructor") && (
+          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">
+              Teacher Information
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+                <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
+                <div className="text-xs">
+                  <p className="text-slate-400">Subject</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.subject || "N/A"}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+                <Calendar className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
+                <div className="text-xs">
+                  <p className="text-slate-400">Joining Date</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p>
                 </div>
               </div>
             </div>
