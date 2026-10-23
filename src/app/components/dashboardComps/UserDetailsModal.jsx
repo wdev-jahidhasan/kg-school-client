@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import {
-  X, User, Mail, Shield, CheckCircle2, Clock,
-  Phone, Droplet, Activity, BookOpen, Layers, Hash, Briefcase, Ban
-} from "lucide-react";
+import { X, User, Mail, CheckCircle2, Clock, Ban } from "lucide-react";
+import GuardianView from "./AdminManageUsersDetails/GuardianView";
+import StaffTeacherView from "./AdminManageUsersDetails/StaffTeacherView";
+import ActivityLogView from "./AdminManageUsersDetails/ActivityLogView";
 
 export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeColor }) {
   if (!isOpen || !user) return null;
@@ -40,7 +40,6 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
 
         {/* Modal Content - Scrollable */}
         <div className="p-6 space-y-5 text-xs sm:text-sm overflow-y-auto">
-
           {/* User Header Summary */}
           <div className="flex items-center gap-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
             <div className="w-12 h-12 rounded-full border-2 border-emerald-500/40 bg-emerald-100 dark:bg-slate-800 text-emerald-700 dark:text-emerald-300 flex items-center justify-center font-bold text-lg shrink-0 overflow-hidden">
@@ -59,10 +58,10 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
                   {user.role || "User"}
                 </span>
                 <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold ${statusApproved
-                  ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
-                  : user.status === "disabled"
-                    ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
-                    : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
+                    ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
+                    : user.status === "disabled"
+                      ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
+                      : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
                   }`}>
                   {statusApproved ? <CheckCircle2 className="w-3 h-3" /> : user.status === "disabled" ? <Ban className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                   {user.status || (user.isApproved ? "Verified" : "Pending")}
@@ -83,215 +82,14 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
             </div>
           )}
 
-          {/* Dynamic Role-Based Extra Details Section */}
-
-          {/* 1. GUARDIAN ROLE DETAILS */}
-          {role === "guardian" && (
-            <div className="space-y-3 pt-1">
-
-              {/* Email & Guardian's Phone Together in One Box */}
-              <div className="p-3.5 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Email */}
-                <div className="flex items-center gap-2.5">
-                  <div className="p-2 rounded-lg bg-emerald-100/60 dark:bg-emerald-950/60 text-emerald-600 shrink-0">
-                    <Mail className="w-4 h-4" />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[10px] uppercase font-medium text-slate-400">Email Address</p>
-                    <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{user.email || "N/A"}</p>
-                  </div>
-                </div>
-
-                {/* Phone */}
-                <div className="flex items-center gap-2.5 sm:border-l sm:border-slate-200/60 sm:dark:border-slate-800 sm:pl-3">
-                  <div className="p-2 rounded-lg bg-emerald-100/60 dark:bg-emerald-950/60 text-emerald-600 shrink-0">
-                    <Phone className="w-4 h-4" />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[10px] uppercase font-medium text-slate-400">Guardian's Phone</p>
-                    <p className="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">{profile.phone || user.phone || "N/A"}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Linked Student Information Card (2x2 Clean Grid) */}
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-950/60 dark:to-emerald-950/20 border border-slate-200/80 dark:border-slate-800 space-y-3">
-
-                {/* Student Top Header */}
-                <div className="flex items-center gap-3 pb-3 border-b border-slate-200/60 dark:border-slate-800">
-                  <div className="w-12 h-12 rounded-full border border-emerald-500/30 bg-white dark:bg-slate-800 overflow-hidden flex items-center justify-center shrink-0">
-                    {profile.studentImage ? (
-                      <img src={profile.studentImage} alt="Student" className="w-full h-full object-cover" />
-                    ) : (
-                      <User className="w-6 h-6 text-slate-400" />
-                    )}
-                  </div>
-                  <div>
-                    <h5 className="text-sm font-bold text-slate-900 dark:text-white leading-tight">
-                      {profile.studentName || "Not Assigned"}
-                    </h5>
-                    <span className="text-[10px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-100/60 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md inline-block mt-0.5">
-                      Linked Student Profile
-                    </span>
-                  </div>
-                </div>
-
-                {/* Student 2x2 Grid Layout */}
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800">
-                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
-                      <BookOpen className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Class</span>
-                    </div>
-                    <p className="text-xs font-bold text-slate-900 dark:text-slate-100 pl-5">{profile.studentClass || "N/A"}</p>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800">
-                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
-                      <Layers className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Section</span>
-                    </div>
-                    <p className="text-xs font-bold text-slate-900 dark:text-slate-100 pl-5">{profile.studentSection || "N/A"}</p>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800">
-                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
-                      <Hash className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Roll No</span>
-                    </div>
-                    <p className="text-xs font-bold text-slate-900 dark:text-slate-100 pl-5">{profile.studentRoll || "N/A"}</p>
-                  </div>
-
-                  <div className="p-2.5 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800">
-                    <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-400">
-                      <Droplet className="w-3.5 h-3.5 text-rose-500" />
-                      <span>Blood Group</span>
-                    </div>
-                    <p className="text-xs font-bold text-rose-600 dark:text-rose-400 pl-5">{profile.studentBloodGroup || "N/A"}</p>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-          )}
-
-          {/* 2. STAFF ROLE DETAILS */}
-          {role === "staff" && (
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                  <Phone className="w-3.5 h-3.5 text-emerald-600" /> Phone Number
-                </span>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.phone || user.phone || "N/A"}</p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                  <Droplet className="w-3.5 h-3.5 text-rose-500" /> Blood Group
-                </span>
-                <p className="font-bold text-rose-600 dark:text-rose-400 uppercase">{profile.bloodGroup || "N/A"}</p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                  <Briefcase className="w-3.5 h-3.5 text-emerald-600" /> Department
-                </span>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.department || "N/A"}</p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                  <Clock className="w-3.5 h-3.5 text-emerald-600" /> Joining Date
-                </span>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p>
-              </div>
-            </div>
-          )}
-
-          {/* 3. TEACHER ROLE DETAILS */}
-          {(role === "teacher" || role === "instructor") && (
-            <div className="grid grid-cols-2 gap-3 pt-1">
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                  <Phone className="w-3.5 h-3.5 text-emerald-600" /> Phone Number
-                </span>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.phone || user.phone || "N/A"}</p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                  <Droplet className="w-3.5 h-3.5 text-rose-500" /> Blood Group
-                </span>
-                <p className="font-bold text-rose-600 dark:text-rose-400 uppercase">{profile.bloodGroup || "N/A"}</p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                  <BookOpen className="w-3.5 h-3.5 text-emerald-600" /> Subject
-                </span>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.subject || "N/A"}</p>
-              </div>
-
-              <div className="p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60">
-                <span className="text-slate-400 text-[11px] flex items-center gap-1.5 font-medium mb-1">
-                  <Clock className="w-3.5 h-3.5 text-emerald-600" /> Joining Date
-                </span>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p>
-              </div>
-            </div>
-          )}
-
-          {/* 4. ADMIN ROLE DETAILS */}
-          {role === "admin" && (
-            <div className="p-4 rounded-xl bg-slate-50/70 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/60 text-center text-xs text-slate-500 dark:text-slate-400">
-              System Administrator profile requires no extra details.
-            </div>
+          {/* Role-Specific Modular Views */}
+          {role === "guardian" && <GuardianView user={user} profile={profile} />}
+          {(role === "staff" || role === "teacher" || role === "instructor" || role === "admin") && (
+            <StaffTeacherView role={role} profile={profile} />
           )}
 
           {/* Activity Panel */}
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
-              <Activity className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <h5 className="font-bold text-slate-900 dark:text-slate-100 text-xs sm:text-sm">
-                Recent Activity Log
-              </h5>
-            </div>
-
-            {userActivities.length > 0 ? (
-              <div className="space-y-2">
-                {userActivities.map((act, idx) => (
-                  <div
-                    key={idx}
-                    className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/80 flex items-start justify-between gap-3 text-xs"
-                  >
-                    <div>
-                      <p className="font-medium text-slate-800 dark:text-slate-200">
-                        {act.title || act.action || "Activity recorded"}
-                      </p>
-                      {act.description && (
-                        <p className="text-slate-400 text-[11px] mt-0.5">{act.description}</p>
-                      )}
-                    </div>
-                    <span className="text-[10px] text-slate-400 whitespace-nowrap font-mono">
-                      {act.timestamp ? new Date(act.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recently"}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="p-6 rounded-xl bg-slate-50/50 dark:bg-slate-800/20 border border-dashed border-slate-200 dark:border-slate-800 text-center space-y-1">
-                <Activity className="w-6 h-6 text-slate-300 dark:text-slate-600 mx-auto" />
-                <p className="text-slate-500 dark:text-slate-400 font-medium text-xs">
-                  No recent activity found
-                </p>
-                <p className="text-[11px] text-slate-400">
-                  User activities and system logs will be listed here.
-                </p>
-              </div>
-            )}
-          </div>
-
+          <ActivityLogView userActivities={userActivities} />
         </div>
 
         {/* Modal Footer */}
@@ -303,7 +101,6 @@ export default function UserDetailsModal({ user, isOpen, onClose, getRoleBadgeCo
             Close
           </button>
         </div>
-
       </div>
     </div>
   );
