@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { User, Mail, Shield, Edit3, Loader2, BookOpen, Layers, Hash, Phone, Droplet, Briefcase, Calendar } from "lucide-react";
+import { User, Mail, Shield, Edit3, Loader2, BookOpen, Layers, Hash, Phone, Droplet, Briefcase, Calendar, CheckCircle2, Clock, Ban } from "lucide-react";
 import { useSession } from "@/lib/auth-client";
 import EditProfileModal from "../components/dashboardComps/EditProfileModal";
 
@@ -42,9 +42,12 @@ export default function ProfileDetailsPage() {
 
   const uniqueId = user?.userId && user.userId.trim() !== "" ? user.userId : "Not Assigned Yet";
 
+  const statusApproved = user.status === "approved" || user.status === "verified" || user.isApproved === true || user.status === "Approved";
+  const userStatus = user.status || (user.isApproved ? "Verified" : "Pending");
+
   const getIdLabel = () => {
-    if (role === "guardian") return "Student ID";
-    if (role === "teacher") return "Teacher ID";
+    if (role === "guardian") return "Student / Guardian ID";
+    if (role === "teacher" || role === "instructor") return "Teacher ID";
     if (role === "staff") return "Staff ID";
     return "System ID";
   };
@@ -65,7 +68,7 @@ export default function ProfileDetailsPage() {
           }
         }
         .animate-sharp-blink {
-          animation: sharpBlink 1s infinite ease-in-out;
+          animation: sharpBlink 3s infinite ease-in-out;
         }
       `}</style>
 
@@ -92,8 +95,22 @@ export default function ProfileDetailsPage() {
                 <Mail className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> {user.email}
               </p>
             </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/50 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider">
-              <Shield className="w-3.5 h-3.5" /> Role: {user.role || "User"}
+
+            {/* Role & Status Badges */}
+            <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/50 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider">
+                <Shield className="w-3.5 h-3.5" /> Role: {user.role || "User"}
+              </div>
+
+              <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusApproved
+                ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/50 dark:border-emerald-800"
+                : user.status === "disabled"
+                  ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-200/50 dark:border-rose-800"
+                  : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200/50 dark:border-amber-800"
+                }`}>
+                {statusApproved ? <CheckCircle2 className="w-3.5 h-3.5" /> : user.status === "disabled" ? <Ban className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
+                Status: {userStatus}
+              </span>
             </div>
           </div>
         </div>
@@ -180,10 +197,9 @@ export default function ProfileDetailsPage() {
                 </div>
               </div>
 
-              {/* Bottom Part: Exact 2x2 Grid (Upore 2-ti, Niche 2-ti) */}
+              {/* Bottom Part: Exact 2x2 Grid */}
               <div className="grid grid-cols-2 gap-3 pt-4">
 
-                {/* Row 1 - Left: Class */}
                 <div className="flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
                     <BookOpen className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
@@ -194,7 +210,6 @@ export default function ProfileDetailsPage() {
                   </p>
                 </div>
 
-                {/* Row 1 - Right: Section */}
                 <div className="flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
                     <Layers className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
@@ -205,7 +220,6 @@ export default function ProfileDetailsPage() {
                   </p>
                 </div>
 
-                {/* Row 2 - Left: Roll */}
                 <div className="flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
                     <Hash className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
@@ -216,7 +230,6 @@ export default function ProfileDetailsPage() {
                   </p>
                 </div>
 
-                {/* Row 2 - Right: Blood Group */}
                 <div className="flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
                     <Droplet className="w-3.5 h-3.5 text-rose-500" />
