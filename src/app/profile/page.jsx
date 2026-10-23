@@ -40,8 +40,35 @@ export default function ProfileDetailsPage() {
   const role = user?.role?.toLowerCase().trim();
   const profile = user?.profile || {};
 
+  const uniqueId = user?.userId && user.userId.trim() !== "" ? user.userId : "Not Assigned Yet";
+
+  const getIdLabel = () => {
+    if (role === "guardian") return "Student ID";
+    if (role === "teacher") return "Teacher ID";
+    if (role === "staff") return "Staff ID";
+    return "System ID";
+  };
+
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-amber-50/60 via-white to-emerald-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-16 sm:py-20 px-4 sm:px-6 lg:px-8 flex justify-center">
+
+      {/* Custom Sharp Blinking Keyframes CSS */}
+      <style jsx global>{`
+        @keyframes sharpBlink {
+          0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 0.75;
+            transform: scale(0.97);
+          }
+        }
+        .animate-sharp-blink {
+          animation: sharpBlink 1s infinite ease-in-out;
+        }
+      `}</style>
+
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-300/20 dark:bg-emerald-900/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-64 h-64 bg-amber-300/25 dark:bg-amber-900/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -69,6 +96,25 @@ export default function ProfileDetailsPage() {
               <Shield className="w-3.5 h-3.5" /> Role: {user.role || "User"}
             </div>
           </div>
+        </div>
+
+        {/* Lucrative & Blinking ID Badge Box */}
+        <div className="relative overflow-hidden mt-5 p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-cyan-950/40 border border-emerald-500/30 dark:border-emerald-500/20 flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-2.5 z-10">
+            <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+              <Hash className="w-4 h-4" />
+            </div>
+            <p className="text-xs uppercase font-extrabold tracking-wider text-slate-700 dark:text-slate-300">
+              {getIdLabel()}
+            </p>
+          </div>
+
+          <span className={`z-10 font-mono text-xs sm:text-sm px-3.5 py-1.5 rounded-lg border tracking-wider font-extrabold ${uniqueId !== "Not Assigned Yet"
+            ? "text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 shadow-md shadow-emerald-500/30 animate-sharp-blink"
+            : "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-400/60 animate-sharp-blink italic"
+            }`}>
+            {uniqueId}
+          </span>
         </div>
 
         {/* Guardian Phone View */}
