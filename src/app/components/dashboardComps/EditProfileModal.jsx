@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, CheckCircle2, Loader2, ArrowRight } from "lucide-react";
+import { X, Upload, Loader2, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 
 import GuardianProfileFields from "./profile/GuardianProfileFields";
