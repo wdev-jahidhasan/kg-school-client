@@ -84,7 +84,21 @@ export default function AdminManageUsersPage() {
     });
   };
 
-  const triggerStatusChange = (userId, newStatus) => {
+  const triggerStatusChange = (userId, newStatus, currentRole) => {
+    // Admin status change guard (Prevents modifying admin status/toggles)
+    if (currentRole && currentRole.toLowerCase() === "admin") {
+      setConfirmModal({
+        isOpen: true,
+        title: "Action Not Allowed",
+        message: "Admin status cannot be modified or disabled.",
+        type: "info",
+        userId: null,
+        newValue: "",
+        currentRole: "",
+      });
+      return;
+    }
+
     const actionLabel = newStatus === "verified" ? "Verified" : "Disabled";
     setConfirmModal({
       isOpen: true,

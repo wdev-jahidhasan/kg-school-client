@@ -54,23 +54,29 @@ export default function UserTable({ users, updatingUserId, getRoleBadgeColor, tr
                       )}
                     </td>
 
-                    {/* Status Selector */}
+                    {/* Status Selector / Fixed Badge without Check Circle for Admin */}
                     <td className="px-5 py-4 text-center">
-                      <select
-                        disabled={isUpdating}
-                        value={user.status || (user.isApproved ? "verified" : "pending")}
-                        onChange={(e) => triggerStatusChange(rowKey, e.target.value)}
-                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/50 ${user.status === "verified" || user.isApproved === true || user.status === "Approved"
-                          ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
-                          : user.status === "disabled"
-                            ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
-                            : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
-                          }`}
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="verified">Verified</option>
-                        <option value="disabled">Disabled</option>
-                      </select>
+                      {isAdmin ? (
+                        <span className="inline-flex items-center justify-center px-3 py-1 rounded-lg text-xs font-bold bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800 shadow-2xs">
+                          Verified
+                        </span>
+                      ) : (
+                        <select
+                          disabled={isUpdating}
+                          value={user.status || (user.isApproved ? "verified" : "pending")}
+                          onChange={(e) => triggerStatusChange(rowKey, e.target.value, user.role)}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-semibold cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/50 ${user.status === "verified" || user.isApproved === true || user.status === "Approved"
+                            ? "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300"
+                            : user.status === "disabled"
+                              ? "bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300"
+                              : "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300"
+                            }`}
+                        >
+                          <option value="pending">Pending</option>
+                          <option value="verified">Verified</option>
+                          <option value="disabled">Disabled</option>
+                        </select>
+                      )}
                     </td>
 
                     {/* Action Button */}
