@@ -136,16 +136,17 @@ export default function ProfileDetailsPage() {
               }`}>
               {uniqueId}
             </span>
+
           </div>
         )}
 
         {(role === "staff" || role === "teacher" || role === "instructor") && (
           <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
             <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
-              <Droplet className="w-4 h-4 text-emerald-600 dark:text-emerald-500 flex-shrink-0" />
+              <Droplet className="w-4 h-4 text-rose-500 fill-rose-500 flex-shrink-0" />
               <div className="text-xs">
                 <p className="text-slate-400">Blood Group</p>
-                <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.bloodGroup || "N/A"}</p>
+                <p className="font-semibold text-slate-900 dark:text-white">{profile.bloodGroup || "N/A"}</p>
               </div>
             </div>
           </div>
@@ -160,22 +161,32 @@ export default function ProfileDetailsPage() {
 
             <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-950/60 dark:to-emerald-950/20 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-emerald-500/30 transition-all space-y-4">
 
-              <div className="flex items-center gap-4 pb-4 border-b border-slate-200/60 dark:border-slate-800/80">
-                <div className="relative w-14 h-14 rounded-full border-2 border-emerald-500/40 bg-white dark:bg-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0 shadow-sm">
-                  {profile.studentImage ? (
-                    <img src={profile.studentImage} alt="Student" className="w-full h-full object-cover" />
-                  ) : (
-                    <User className="w-7 h-7 text-slate-400" />
-                  )}
+              <div className="flex items-center justify-between pb-4 border-b border-slate-200/60 dark:border-slate-800/80">
+                <div className="flex items-center gap-4">
+                  <div className="relative w-14 h-14 rounded-full border-2 border-emerald-500/40 bg-white dark:bg-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0 shadow-sm">
+                    {profile.studentImage ? (
+                      <img src={profile.studentImage} alt="Student" className="w-full h-full object-cover" />
+                    ) : (
+                      <User className="w-7 h-7 text-slate-400" />
+                    )}
+                  </div>
+                  <div>
+                    <h4 className="text-base font-bold text-slate-900 dark:text-white leading-tight">
+                      {profile.studentName || "Not Assigned"}
+                    </h4>
+                    <span className="inline-block mt-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-100/60 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md">
+                      Junior Scholar Student
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <h4 className="text-base font-bold text-slate-900 dark:text-white leading-tight">
-                    {profile.studentName || "Not Assigned"}
-                  </h4>
-                  <span className="inline-block mt-1 text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-100/60 dark:bg-emerald-950/60 px-2 py-0.5 rounded-md">
-                    Junior Scholar Student
-                  </span>
-                </div>
+
+                {/* Blood Group Badge: Red Droplet Icon with Custom Background */}
+                {(profile.studentBloodGroup || profile.bloodGroup) && (
+                  <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
+                    <Droplet className="w-4 h-4 fill-rose-600 text-rose-600" />
+                    <span className="text-xs font-extrabold text-slate-900 dark:text-white tracking-wide">{profile.studentBloodGroup || profile.bloodGroup}</span>
+                  </div>
+                )}
               </div>
 
               <div className="flex items-center justify-between bg-white/80 dark:bg-slate-900/80 px-3.5 py-2.5 rounded-xl border border-emerald-500/30 shadow-2xs">
@@ -229,16 +240,6 @@ export default function ProfileDetailsPage() {
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 pl-5 truncate">
                     {profile.academicYear || "N/A"}
-                  </p>
-                </div>
-
-                <div className="col-span-2 flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
-                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
-                    <Droplet className="w-3.5 h-3.5 text-rose-500" />
-                    <span>Blood Group</span>
-                  </div>
-                  <p className="text-xs sm:text-sm font-bold text-rose-600 dark:text-rose-400 pl-5 truncate">
-                    {profile.studentBloodGroup || profile.bloodGroup || "N/A"}
                   </p>
                 </div>
 
