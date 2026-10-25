@@ -15,13 +15,14 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
   const [phone, setPhone] = useState(user?.profile?.phone || "");
   const [bloodGroup, setBloodGroup] = useState(user?.profile?.bloodGroup || "");
 
-  // Guardian States
+  // Guardian States (including academicYear)
   const [studentName, setStudentName] = useState(user?.profile?.studentName || "");
   const [studentImageUrl, setStudentImageUrl] = useState(user?.profile?.studentImage || "");
   const [studentClass, setStudentClass] = useState(user?.profile?.studentClass || "");
   const [studentSection, setStudentSection] = useState(user?.profile?.studentSection || "");
   const [studentRoll, setStudentRoll] = useState(user?.profile?.studentRoll || "");
   const [studentBloodGroup, setStudentBloodGroup] = useState(user?.profile?.studentBloodGroup || "");
+  const [academicYear, setAcademicYear] = useState(user?.profile?.academicYear || "");
 
   // Staff & Teacher States
   const [department, setDepartment] = useState(user?.profile?.department || "");
@@ -78,7 +79,8 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
         studentClass,
         studentSection,
         studentRoll,
-        studentBloodGroup
+        studentBloodGroup,
+        academicYear
       };
     } else if (role === "staff") {
       profilePayload = { phone, bloodGroup, department, joiningDate };
@@ -136,7 +138,6 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                 <input type="text" required value={name} onChange={(e) => setName(e.target.value)} className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-950/50 px-4 py-2.5 text-sm text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-950 focus:border-emerald-600 dark:focus:border-emerald-500 focus:outline-none transition-all" />
               </div>
 
-              {/* Guardian Phone Field (Only Phone) */}
               {role === "guardian" && (
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-1.5">Guardian's Phone Number <span className="text-red-500">*</span></label>
@@ -144,7 +145,6 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                 </div>
               )}
 
-              {/* Staff & Teacher Phone & Blood Group */}
               {(role === "staff" || role === "teacher" || role === "instructor") && (
                 <div className="grid grid-cols-2 gap-3">
                   <div>
@@ -168,6 +168,7 @@ export default function EditProfileModal({ isOpen, onClose, user }) {
                   studentRoll={studentRoll} setStudentRoll={setStudentRoll}
                   studentSection={studentSection} setStudentSection={setStudentSection}
                   studentBloodGroup={studentBloodGroup} setStudentBloodGroup={setStudentBloodGroup}
+                  academicYear={academicYear} setAcademicYear={setAcademicYear}
                   studentImageUrl={studentImageUrl} handleStudentImageUpload={handleStudentImageUpload}
                   studentUploading={studentUploading} oldImage={user?.profile?.studentImage}
                 />

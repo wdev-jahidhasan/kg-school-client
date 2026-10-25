@@ -56,7 +56,6 @@ export default function ProfileDetailsPage() {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-amber-50/60 via-white to-emerald-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-16 sm:py-20 px-4 sm:px-6 lg:px-8 flex justify-center">
 
-      {/* Custom Sharp Blinking Keyframes CSS */}
       <style jsx global>{`
         @keyframes sharpBlink {
           0%, 100% {
@@ -92,11 +91,9 @@ export default function ProfileDetailsPage() {
           <div className="space-y-2 text-center sm:text-left flex-1">
             <div>
               <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">{user.name}</h2>
-              {/* Gmail Address */}
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-start gap-1.5 mt-0.5">
                 <Mail className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> {user.email}
               </p>
-              {/* Phone Number right below Gmail */}
               {userPhone && (
                 <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-start gap-1.5 mt-1">
                   <Phone className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> {userPhone}
@@ -104,7 +101,6 @@ export default function ProfileDetailsPage() {
               )}
             </div>
 
-            {/* Role & Status Badges */}
             <div className="flex items-center justify-center sm:justify-start gap-2 flex-wrap pt-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/50 dark:border-emerald-800/50 text-emerald-700 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider">
                 <Shield className="w-3.5 h-3.5" /> {user.role || "User"}
@@ -123,7 +119,6 @@ export default function ProfileDetailsPage() {
           </div>
         </div>
 
-        {/* Non-Guardian ID Badge Box (Teacher / Staff / System) */}
         {role !== "guardian" && (
           <div className="relative overflow-hidden mt-5 p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-cyan-950/40 border border-emerald-500/30 dark:border-emerald-500/20 flex items-center justify-between shadow-xs">
             <div className="flex items-center gap-2.5 z-10">
@@ -144,7 +139,6 @@ export default function ProfileDetailsPage() {
           </div>
         )}
 
-        {/* Staff & Teacher Blood Group View */}
         {(role === "staff" || role === "teacher" || role === "instructor") && (
           <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
             <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
@@ -157,7 +151,6 @@ export default function ProfileDetailsPage() {
           </div>
         )}
 
-        {/* Guardian Extra Info View */}
         {role === "guardian" && (
           <div className="mt-6 pt-5 border-t border-slate-200/80 dark:border-slate-800/80">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5 flex items-center gap-2">
@@ -165,10 +158,8 @@ export default function ProfileDetailsPage() {
               Linked Student Information
             </h3>
 
-            {/* Student Profile Card */}
             <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-50 to-emerald-50/30 dark:from-slate-950/60 dark:to-emerald-950/20 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:border-emerald-500/30 transition-all space-y-4">
 
-              {/* Top Part: Image & Name */}
               <div className="flex items-center gap-4 pb-4 border-b border-slate-200/60 dark:border-slate-800/80">
                 <div className="relative w-14 h-14 rounded-full border-2 border-emerald-500/40 bg-white dark:bg-slate-800 overflow-hidden flex items-center justify-center flex-shrink-0 shadow-sm">
                   {profile.studentImage ? (
@@ -187,7 +178,6 @@ export default function ProfileDetailsPage() {
                 </div>
               </div>
 
-              {/* Student ID Badge on the next line below Image & Name */}
               <div className="flex items-center justify-between bg-white/80 dark:bg-slate-900/80 px-3.5 py-2.5 rounded-xl border border-emerald-500/30 shadow-2xs">
                 <span className="text-xs uppercase font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
                   <Hash className="w-4 h-4 text-emerald-600" /> Student ID:
@@ -200,7 +190,6 @@ export default function ProfileDetailsPage() {
                 </span>
               </div>
 
-              {/* Bottom Part: Exact 2x2 Grid */}
               <div className="grid grid-cols-2 gap-3 pt-2">
 
                 <div className="flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
@@ -209,7 +198,7 @@ export default function ProfileDetailsPage() {
                     <span>Class</span>
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 pl-5 truncate">
-                    {profile.studentClass || "N/A"}
+                    {profile.studentClass || profile.class || "N/A"}
                   </p>
                 </div>
 
@@ -219,7 +208,7 @@ export default function ProfileDetailsPage() {
                     <span>Section</span>
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 pl-5 truncate">
-                    {profile.studentSection || "N/A"}
+                    {profile.studentSection || profile.section || "N/A"}
                   </p>
                 </div>
 
@@ -229,17 +218,27 @@ export default function ProfileDetailsPage() {
                     <span>Roll No</span>
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 pl-5 truncate">
-                    {profile.studentRoll || "N/A"}
+                    {profile.studentRoll || profile.roll || "N/A"}
                   </p>
                 </div>
 
                 <div className="flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                    <Calendar className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
+                    <span>Academic Year</span>
+                  </div>
+                  <p className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 pl-5 truncate">
+                    {profile.academicYear || "N/A"}
+                  </p>
+                </div>
+
+                <div className="col-span-2 flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
+                  <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
                     <Droplet className="w-3.5 h-3.5 text-rose-500" />
                     <span>Blood Group</span>
                   </div>
                   <p className="text-xs sm:text-sm font-bold text-rose-600 dark:text-rose-400 pl-5 truncate">
-                    {profile.studentBloodGroup || "N/A"}
+                    {profile.studentBloodGroup || profile.bloodGroup || "N/A"}
                   </p>
                 </div>
 
