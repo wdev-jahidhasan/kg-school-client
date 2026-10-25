@@ -46,7 +46,7 @@ export default function ProfileDetailsPage() {
   const userStatus = user.status || (user.isApproved ? "Verified" : "Pending");
 
   const getIdLabel = () => {
-    if (role === "teacher") return "Teacher ID";
+    if (role === "teacher" || role === "instructor") return "Teacher ID";
     if (role === "staff") return "Staff ID";
     return "System ID";
   };
@@ -84,20 +84,33 @@ export default function ProfileDetailsPage() {
           </button>
         </div>
 
+        {/* User Header Section with Blood Group Badge */}
         <div className="flex flex-col sm:flex-row items-center gap-5">
           <div className="relative w-24 h-24 rounded-full border-2 border-emerald-500/50 bg-slate-100 dark:bg-slate-800 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-md">
             {user.image ? <img src={user.image} alt={user.name} className="w-full h-full object-cover" /> : <User className="w-10 h-10 text-slate-400" />}
           </div>
           <div className="space-y-2 text-center sm:text-left flex-1">
-            <div>
-              <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">{user.name}</h2>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-start gap-1.5 mt-0.5">
-                <Mail className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> {user.email}
-              </p>
-              {userPhone && (
-                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-start gap-1.5 mt-1">
-                  <Phone className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> {userPhone}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <div>
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">{user.name}</h2>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-start gap-1.5 mt-0.5">
+                  <Mail className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> {user.email}
                 </p>
+                {userPhone && (
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 flex items-center justify-center sm:justify-start gap-1.5 mt-1">
+                    <Phone className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" /> {userPhone}
+                  </p>
+                )}
+              </div>
+
+              {/* Staff/Teacher/User Blood Group Badge */}
+              {(profile.bloodGroup || profile.studentBloodGroup) && role !== "guardian" && (
+                <div className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-xs self-center sm:self-start">
+                  <Droplet className="w-4 h-4 fill-rose-600 text-rose-600" />
+                  <span className="text-xs font-extrabold text-slate-900 dark:text-white tracking-wide">
+                    {profile.bloodGroup || profile.studentBloodGroup}
+                  </span>
+                </div>
               )}
             </div>
 
@@ -119,39 +132,7 @@ export default function ProfileDetailsPage() {
           </div>
         </div>
 
-        {role !== "guardian" && (
-          <div className="relative overflow-hidden mt-5 p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-cyan-950/40 border border-emerald-500/30 dark:border-emerald-500/20 flex items-center justify-between shadow-xs">
-            <div className="flex items-center gap-2.5 z-10">
-              <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-                <Hash className="w-4 h-4" />
-              </div>
-              <p className="text-xs uppercase font-extrabold tracking-wider text-slate-700 dark:text-slate-300">
-                {getIdLabel()}
-              </p>
-            </div>
-
-            <span className={`z-10 font-mono text-xs sm:text-sm px-3.5 py-1.5 rounded-lg border tracking-wider font-extrabold ${uniqueId !== "Not Assigned Yet"
-              ? "text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 shadow-md shadow-emerald-500/30 animate-sharp-blink"
-              : "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-400/60 animate-sharp-blink italic"
-              }`}>
-              {uniqueId}
-            </span>
-
-          </div>
-        )}
-
-        {(role === "staff" || role === "teacher" || role === "instructor") && (
-          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
-              <Droplet className="w-4 h-4 text-rose-500 fill-rose-500 flex-shrink-0" />
-              <div className="text-xs">
-                <p className="text-slate-400">Blood Group</p>
-                <p className="font-semibold text-slate-900 dark:text-white">{profile.bloodGroup || "N/A"}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
+        {/* Guardian Section */}
         {role === "guardian" && (
           <div className="mt-6 pt-5 border-t border-slate-200/80 dark:border-slate-800/80">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3.5 flex items-center gap-2">
@@ -180,7 +161,7 @@ export default function ProfileDetailsPage() {
                   </div>
                 </div>
 
-                {/* Blood Group Badge: Red Droplet Icon with Custom Background */}
+                {/* Student Blood Group Badge */}
                 {(profile.studentBloodGroup || profile.bloodGroup) && (
                   <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
                     <Droplet className="w-4 h-4 fill-rose-600 text-rose-600" />
@@ -202,7 +183,6 @@ export default function ProfileDetailsPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-3 pt-2">
-
                 <div className="flex flex-col gap-1 p-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200/60 dark:border-slate-800 shadow-2xs">
                   <div className="flex items-center gap-1.5 text-[11px] font-medium text-slate-500 dark:text-slate-400">
                     <BookOpen className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-500" />
@@ -242,28 +222,88 @@ export default function ProfileDetailsPage() {
                     {profile.academicYear || "N/A"}
                   </p>
                 </div>
-
               </div>
             </div>
           </div>
         )}
 
+        {/* Staff Section: Placed Staff ID Under Staff Info */}
         {role === "staff" && (
-          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">Staff Information</h3>
+          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Staff Information</h3>
             <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800"><Briefcase className="w-4 h-4 text-emerald-600" /><div className="text-xs"><p className="text-slate-400">Department</p><p className="font-semibold text-slate-800 dark:text-slate-200">{profile.department || "N/A"}</p></div></div>
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800"><Calendar className="w-4 h-4 text-emerald-600" /><div className="text-xs"><p className="text-slate-400">Joining Date</p><p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p></div></div>
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+                <Briefcase className="w-4 h-4 text-emerald-600" />
+                <div className="text-xs">
+                  <p className="text-slate-400">Department</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.department || "N/A"}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+                <Calendar className="w-4 h-4 text-emerald-600" />
+                <div className="text-xs">
+                  <p className="text-slate-400">Joining Date</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Staff ID Card Box Placed Right Below Staff Information */}
+            <div className="relative overflow-hidden p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-cyan-950/40 border border-emerald-500/30 dark:border-emerald-500/20 flex items-center justify-between shadow-xs">
+              <div className="flex items-center gap-2.5 z-10">
+                <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                  <Hash className="w-4 h-4" />
+                </div>
+                <p className="text-xs uppercase font-extrabold tracking-wider text-slate-700 dark:text-slate-300">
+                  {getIdLabel()}
+                </p>
+              </div>
+              <span className={`z-10 font-mono text-xs sm:text-sm px-3.5 py-1.5 rounded-lg border tracking-wider font-extrabold ${uniqueId !== "Not Assigned Yet"
+                ? "text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 shadow-md shadow-emerald-500/30 animate-sharp-blink"
+                : "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-400/60 animate-sharp-blink italic"
+                }`}>
+                {uniqueId}
+              </span>
             </div>
           </div>
         )}
 
+        {/* Teacher Section */}
         {(role === "teacher" || role === "instructor") && (
-          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-3">Teacher Information</h3>
+          <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
+            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Teacher Information</h3>
             <div className="grid grid-cols-2 gap-3">
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800"><BookOpen className="w-4 h-4 text-emerald-600" /><div className="text-xs"><p className="text-slate-400">Subject</p><p className="font-semibold text-slate-800 dark:text-slate-200">{profile.subject || "N/A"}</p></div></div>
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800"><Calendar className="w-4 h-4 text-emerald-600" /><div className="text-xs"><p className="text-slate-400">Joining Date</p><p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p></div></div>
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+                <BookOpen className="w-4 h-4 text-emerald-600" />
+                <div className="text-xs">
+                  <p className="text-slate-400">Subject</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.subject || "N/A"}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800">
+                <Calendar className="w-4 h-4 text-emerald-600" />
+                <div className="text-xs">
+                  <p className="text-slate-400">Joining Date</p>
+                  <p className="font-semibold text-slate-800 dark:text-slate-200">{profile.joiningDate || "N/A"}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative overflow-hidden p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-cyan-950/40 border border-emerald-500/30 dark:border-emerald-500/20 flex items-center justify-between shadow-xs">
+              <div className="flex items-center gap-2.5 z-10">
+                <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                  <Hash className="w-4 h-4" />
+                </div>
+                <p className="text-xs uppercase font-extrabold tracking-wider text-slate-700 dark:text-slate-300">
+                  {getIdLabel()}
+                </p>
+              </div>
+              <span className={`z-10 font-mono text-xs sm:text-sm px-3.5 py-1.5 rounded-lg border tracking-wider font-extrabold ${uniqueId !== "Not Assigned Yet"
+                ? "text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 shadow-md shadow-emerald-500/30 animate-sharp-blink"
+                : "text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 border-amber-400/60 animate-sharp-blink italic"
+                }`}>
+                {uniqueId}
+              </span>
             </div>
           </div>
         )}
