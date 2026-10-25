@@ -22,7 +22,7 @@ export default function Navbar() {
     isOpen: false,
     title: "",
     message: "",
-    type: "pending", // 'pending' | 'disabled'
+    type: "pending",
   });
 
   const { theme, setTheme } = useTheme();
@@ -315,15 +315,15 @@ export default function Navbar() {
         )}
       </AnimatePresence>
 
-      {/* Centered Popup Modal */}
+      {/* Full screen centered popup with blur background */}
       <AnimatePresence>
         {statusModal.isOpen && (
-          <div className="fixed inset-x-0 top-24 z-[99999] flex items-center justify-center p-4 pointer-events-none">
+          <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-md">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: -10 }}
+              initial={{ opacity: 0, scale: 0.9, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: -10 }}
-              className={`pointer-events-auto border rounded-2xl max-w-xs sm:max-w-sm w-full p-5 shadow-2xl space-y-4 text-center bg-white dark:bg-slate-900 ${statusModal.type === "disabled"
+              exit={{ opacity: 0, scale: 0.9, y: 15 }}
+              className={`border rounded-2xl max-w-xs sm:max-w-sm w-full p-5 shadow-2xl space-y-4 text-center bg-white dark:bg-slate-900 ${statusModal.type === "disabled"
                 ? "border-rose-500/40 shadow-rose-950/30"
                 : "border-amber-500/40 shadow-amber-950/30"
                 }`}
