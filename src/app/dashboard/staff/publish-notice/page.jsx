@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send, FileText, Users, Calendar, CheckCircle2, Tag } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 const audienceOptions = [
   "Public",
@@ -17,6 +18,8 @@ const audienceOptions = [
 const noticeCategories = ["General", "Admission", "Exam", "Events"];
 
 export default function PublishNotice() {
+  const { data: session } = authClient.useSession();
+
   const [formData, setFormData] = useState({
     title: "",
     category: "General",
@@ -38,13 +41,20 @@ export default function PublishNotice() {
     setIsSubmitting(true);
     setSuccessMessage(false);
 
+    const noticePayload = {
+      ...formData,
+      publisherName: session?.user?.name || "Junior Scholars Office",
+      publisherId: session?.user?.userId || "N/A",
+      publisherRole: session?.user?.role || "staff",
+    };
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/publish-notice`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(noticePayload),
       });
 
       if (response.ok) {
@@ -61,31 +71,10 @@ export default function PublishNotice() {
           setSuccessMessage(false);
         }, 2000);
       } else {
-        setSuccessMessage(true);
-        setTimeout(() => {
-          setFormData({
-            title: "",
-            category: "General",
-            audience: "Public",
-            publishDate: new Date().toISOString().split("T")[0],
-            description: "",
-          });
-          setSuccessMessage(false);
-        }, 2000);
+        console.error("Failed to publish notice");
       }
     } catch (error) {
       console.error("Error publishing notice:", error);
-      setSuccessMessage(true);
-      setTimeout(() => {
-        setFormData({
-          title: "",
-          category: "General",
-          audience: "Public",
-          publishDate: new Date().toISOString().split("T")[0],
-          description: "",
-        });
-        setSuccessMessage(false);
-      }, 2000);
     } finally {
       setIsSubmitting(false);
     }
