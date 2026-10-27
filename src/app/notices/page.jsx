@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Bell, Download, X, ArrowRight, FileText } from "lucide-react";
+import { Calendar, Bell, Download, X, ArrowRight, FileText, User } from "lucide-react";
 import { getFilteredNotices } from "@/utils/noticeFilter";
 
 const noticeCategories = ["All", "General", "Admission", "Exam", "Events"];
@@ -180,8 +180,8 @@ export default function NoticesPage() {
 
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
                 <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-medium">
-                  <FileText className="w-4 h-4 text-emerald-600" />
-                  Official Circular - Junior Scholars Authority
+                  <User className="w-4 h-4 text-emerald-600" />
+                  Published by: {(selectedNotice.publisherName || "Junior Scholars Office").toUpperCase()} ({selectedNotice.publisherId || "N/A"})
                 </div>
 
                 {/* <button
