@@ -19,7 +19,7 @@ export default function DashboardLayout({ children }) {
   const menuItems = roleBasedMenus[currentRole] || roleBasedMenus.guardian;
 
   return (
-    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="min-h-screen flex w-full overflow-x-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
       {/* Mobile Sidebar Backdrop */}
       {isSidebarOpen && (
         <div
@@ -30,11 +30,11 @@ export default function DashboardLayout({ children }) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:static inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        className={`fixed md:sticky top-0 inset-y-0 left-0 z-50 h-screen w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out shrink-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
           }`}
       >
         {/* Sidebar Header with Brand */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800">
+        <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800 shrink-0">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             <span className="text-sm font-bold tracking-wide text-slate-900 dark:text-white">
@@ -51,7 +51,7 @@ export default function DashboardLayout({ children }) {
         </div>
 
         {/* Role Badge Indicator inside Sidebar */}
-        <div className="px-6 py-4 border-b border-slate-200/60 dark:border-slate-800/40 bg-slate-100/50 dark:bg-slate-950/30">
+        <div className="px-6 py-4 border-b border-slate-200/60 dark:border-slate-800/40 bg-slate-100/50 dark:bg-slate-950/35 shrink-0">
           <p className="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">
             Active Workspace
           </p>
@@ -86,9 +86,9 @@ export default function DashboardLayout({ children }) {
       </aside>
 
       {/* Main Content Wrapper */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Dashboard Topbar */}
-        <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 md:px-8 flex items-center justify-between sticky top-0 z-30">
+      <div className="flex-1 flex flex-col min-w-0 min-h-screen relative">
+        {/* Dashboard Topbar (Fixed Sticky Navbar) */}
+        <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 md:px-8 flex items-center justify-between fixed top-0 right-0 left-0 md:left-72 z-30">
           <div className="flex items-center gap-3">
             {/* Mobile Menu Toggle Button */}
             <button
@@ -98,14 +98,14 @@ export default function DashboardLayout({ children }) {
             >
               <Menu className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </button>
-            <h1 className="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300 tracking-wide">
+            <h1 className="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300 tracking-wide truncate">
               Dashboard <span className="text-slate-400 mx-1">/</span>{" "}
               <span className="text-emerald-600 dark:text-emerald-400 capitalize">{currentRole}</span>
             </h1>
           </div>
 
           {/* Right side role info badge & Minimal Theme Toggle */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <motion.button
               whileTap={{ scale: 0.9 }}
               whileHover={{ scale: 1.1 }}
@@ -120,7 +120,7 @@ export default function DashboardLayout({ children }) {
               )}
             </motion.button>
 
-            <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 px-3 py-1.5 rounded-full text-xs shadow-sm">
+            <div className="hidden sm:flex items-center gap-2 bg-slate-100 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 px-3 py-1.5 rounded-full text-xs shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span className="font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-200">
                 {currentRole}
@@ -129,8 +129,8 @@ export default function DashboardLayout({ children }) {
           </div>
         </header>
 
-        {/* Page Content Container */}
-        <main className="flex-1 p-4 md:p-8 overflow-y-auto bg-slate-50 dark:bg-slate-950">
+        {/* Page Content Container (pt-16 added to push content below fixed header) */}
+        <main className="flex-1 w-full p-4 md:p-8 pt-20 md:pt-24 overflow-y-auto overflow-x-hidden bg-slate-50 dark:bg-slate-950">
           {children}
         </main>
       </div>
