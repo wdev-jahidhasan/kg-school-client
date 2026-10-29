@@ -6,14 +6,13 @@ import { Send, BookOpen, GraduationCap, Calendar, CheckCircle2, User } from "luc
 import { authClient } from "@/lib/auth-client";
 
 const classOptions = [
-  "Play",
-  "Nursery",
-  "KG",
-  "Class 1",
-  "Class 2",
-  "Class 3",
-  "Class 4",
-  "Class 5",
+  { label: "Play", value: "play" },
+  { label: "Nursery", value: "nursery" },
+  { label: "One", value: "one" },
+  { label: "Two", value: "two" },
+  { label: "Three", value: "three" },
+  { label: "Four", value: "four" },
+  { label: "Five", value: "five" },
 ];
 
 const subjectOptions = [
@@ -31,7 +30,7 @@ export default function WriteDiary() {
   const { data: session } = authClient.useSession();
 
   const [formData, setFormData] = useState({
-    className: "Play",
+    className: "play",
     subjectName: "English",
     teacherName: "",
     diaryDate: new Date().toISOString().split("T")[0],
@@ -147,8 +146,8 @@ export default function WriteDiary() {
                     className="w-full pl-11 pr-4 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all cursor-pointer"
                   >
                     {classOptions.map((cls) => (
-                      <option key={cls} value={cls} className="dark:bg-slate-900">
-                        {cls}
+                      <option key={cls.value} value={cls.value} className="dark:bg-slate-900">
+                        {cls.label}
                       </option>
                     ))}
                   </select>
