@@ -30,26 +30,9 @@ export default function DashboardLayout({ children }) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed md:sticky top-0 inset-y-0 left-0 z-50 h-screen w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out shrink-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        className={`fixed md:sticky top-16 inset-y-0 left-0 z-40 h-[calc(100vh-4rem)] w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out shrink-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
           }`}
       >
-        {/* Sidebar Header with Brand */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800 shrink-0">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-sm font-bold tracking-wide text-slate-900 dark:text-white">
-              Junior Scholars
-            </span>
-          </div>
-          <button
-            onClick={() => setIsSidebarOpen(false)}
-            className="md:hidden text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1 rounded-lg bg-slate-100 dark:bg-slate-800/50"
-            aria-label="Close Sidebar"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
         {/* Role Badge Indicator inside Sidebar */}
         <div className="px-6 py-4 border-b border-slate-200/60 dark:border-slate-800/40 bg-slate-100/50 dark:bg-slate-950/35 shrink-0">
           <p className="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">
@@ -72,10 +55,10 @@ export default function DashboardLayout({ children }) {
                 href={item.href}
                 onClick={() => setIsSidebarOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${isHome
-                  ? "mt-6 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/10 hover:bg-emerald-100 dark:hover:bg-emerald-950/30"
-                  : isActive
-                    ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/20 dark:shadow-emerald-950/50"
-                    : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/60"
+                    ? "mt-6 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/10 hover:bg-emerald-100 dark:hover:bg-emerald-950/30"
+                    : isActive
+                      ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/20 dark:shadow-emerald-950/50"
+                      : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800/60"
                   }`}
               >
                 <span>{item.name}</span>
@@ -87,9 +70,9 @@ export default function DashboardLayout({ children }) {
 
       {/* Main Content Wrapper */}
       <div className="flex-1 flex flex-col min-w-0 min-h-screen relative">
-        {/* Dashboard Topbar (Fixed Sticky Navbar) */}
-        <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 md:px-8 flex items-center justify-between fixed top-0 right-0 left-0 md:left-72 z-30">
-          <div className="flex items-center gap-3">
+        {/* Dashboard Topbar (Fixed Sticky Navbar spanning full width from left to right) */}
+        <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 md:px-8 flex items-center justify-between fixed top-0 right-0 left-0 z-50">
+          <div className="flex items-center gap-4">
             {/* Mobile Menu Toggle Button */}
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -98,6 +81,15 @@ export default function DashboardLayout({ children }) {
             >
               <Menu className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
             </button>
+
+            {/* Brand / Junior Scholars logo with green dot - Spans leftmost in the navbar */}
+            <div className="hidden md:flex items-center gap-2 pr-6 border-r border-slate-200 dark:border-slate-800 shrink-0">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="text-sm font-bold tracking-wide text-slate-900 dark:text-white">
+                Junior Scholars
+              </span>
+            </div>
+
             <h1 className="text-xs md:text-sm font-semibold text-slate-700 dark:text-slate-300 tracking-wide truncate">
               Dashboard <span className="text-slate-400 mx-1">/</span>{" "}
               <span className="text-emerald-600 dark:text-emerald-400 capitalize">{currentRole}</span>
@@ -129,7 +121,7 @@ export default function DashboardLayout({ children }) {
           </div>
         </header>
 
-        {/* Page Content Container (pt-16 added to push content below fixed header) */}
+        {/* Page Content Container */}
         <main className="flex-1 w-full p-4 md:p-8 pt-20 md:pt-24 overflow-y-auto overflow-x-hidden bg-slate-50 dark:bg-slate-950">
           {children}
         </main>
